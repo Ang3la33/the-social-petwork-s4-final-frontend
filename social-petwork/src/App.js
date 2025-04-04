@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
 
+import NavBar from './Components/NavBar';
 import Login from './Login';
 import Register from './Register';
 import Profile from './Profile';
@@ -13,7 +14,7 @@ function App() {
   return (
     <Router>
       <div className="App">
-        <main className="container mt-4">
+        <main className="mainContainer">
           <Routes>
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
