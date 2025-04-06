@@ -94,6 +94,80 @@
   object-fit: cover;
   border: 2px solid #e1e1e1;
 }
+
+/* Footer Styling ***********************************************************/
+.footer {
+  background-color: #69A297;
+  color: white;
+  padding: 2rem 1rem;
+}
+
+.footer-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  align-items: center;
+}
+
+.footer-top {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  text-align: center;
+  gap: 1.5rem;
+}
+
+.footer-links {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.footer-links a {
+  text-decoration: underline;
+  color: white;
+}
+
+.footer-logo {
+  width: 100px;
+}
+
+.footer-line {
+  width: 100%;
+  border: none;
+  height: 1px;
+  background-color: rgba(255, 255, 255, 0.3);
+}
+
+.footer-bottom {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  text-align: center;
+  font-size: 0.875rem;
+}
+
+.footer-icons {
+  display: flex;
+  gap: 1.5rem;
+  font-size: 1.25rem;
+}
+
+.footer-icons a {
+  color: white;
+}
+
+.footer-heart {
+  color: #f4a261;
+}
+
+
+/* Medias for Different Screen-Sizing ***************************/
 @media (max-width: 768px) {
   .navBar-Container {
     flex-wrap: wrap;

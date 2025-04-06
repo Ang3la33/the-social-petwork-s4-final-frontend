@@ -4,6 +4,7 @@ import './App.css';
 
 import Navbar from './Components/NavBar';
 import Login from './Pages/Login.jsx';
+import Footer from './Components/Footer';
 
 
 function App() {
@@ -13,9 +14,10 @@ function App() {
       <Navbar />
         <main className="mainContainer">
         </main>
-        <footer className="footer">
+        {/* <footer className="footer">
           &copy; 2025 The Social Petwork
-        </footer>
+        </footer> */}
+        <Footer />
       </div>
   );
 }
