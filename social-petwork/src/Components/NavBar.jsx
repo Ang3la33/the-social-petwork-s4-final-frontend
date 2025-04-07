@@ -1,7 +1,8 @@
 
 import React from 'react';
+import { FaSearch } from "react-icons/fa";
 import '../App.css';
-import logoImage from '../Assets/Images/logo.png';
+import logoImage from '../Assets/Images/greenLogo.png';
 
 function Navbar() {
   const currentUser = {
@@ -22,27 +23,29 @@ function Navbar() {
         </div>
 
         <div className="search-bar">
-          <input
-            type="search"
-            placeholder="Search"
-          />
-          <button type="button">Enter</button>
+          <input type="search" placeholder="Search" />
+          <button type="button">
+            <FaSearch />
+          </button>
         </div>
 
         <div className="nav-link">
-          <a href="/create-post" className="nav-link">Create Post</a>
-          <a href="/browse-users" className="nav-link">Browse Users</a>
+          <a href="/create-post" className="nav-link">
+            Create Post
+          </a>
+          <a href="/browse-users" className="nav-link">
+            Browse Users
+          </a>
         </div>
 
         <div className="user-profile">
           <a href="/profile" className="profile-link">
-          <img
-                        src={currentUser.avatarUrl}
-                        className="avatar-picture"
-                        alt="User avatar"
-                      />
+            <img
+              src={currentUser.avatarUrl}
+              className="avatar-picture"
+              alt="User avatar"
+            />
             <span className="username">{currentUser.username}</span>
-
           </a>
         </div>
       </div>
