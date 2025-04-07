@@ -251,6 +251,79 @@ body, html, #root {
   font-weight: 600;
 }
 
+/* Register ********************************************************/
+body, html, #root {
+  height: 100%;
+  margin: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.register-wrapper {
+  height: 100vh;
+  width: 100%;
+  background: linear-gradient(135deg, #F8882C, #69A297);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.register-box {
+  background-color: #FFF6EE;
+  padding: 2.5rem 3rem;
+  border-radius: 15px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+  text-align: center;
+  width: 90%;
+  max-width: 450px;
+}
+
+.register-box h2 {
+  margin-bottom: 1.5rem;
+}
+
+.register-box label {
+  display: block;
+  text-align: left;
+  margin: 0.75rem 0 0.25rem;
+  font-weight: bold;
+}
+
+.register-box input {
+  width: 100%;
+  padding: 0.6rem;
+  border: 1px solid #ccc;
+  border-radius: 20px;
+  outline: none;
+  font-size: 1rem;
+}
+
+.register-box button {
+  margin-top: 1.5rem;
+  padding: 0.6rem 1.5rem;
+  width: 50%;
+  background-color: #FF9A47;
+  border: none;
+  border-radius: 20px;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.3s ease;
+}
+
+.register-box button:hover {
+  background-color: #e98b30;
+}
+
+.logo {
+  margin: 1.5rem auto 0.5rem;
+  width: 120px;
+}
+
+.welcome-text {
+  font-weight: 600;
+}
+
 
 /* Medias for Different Screen-Sizing ***************************/
 @media (max-width: 768px) {
