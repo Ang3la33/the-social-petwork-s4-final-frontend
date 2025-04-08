@@ -1,14 +1,23 @@
-
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { FaSearch } from "react-icons/fa";
 import '../App.css';
 import logoImage from '../Assets/Images/greenLogo.png';
 
 function Navbar() {
-  const currentUser = {
-    username: 'doglover234',
+  const [currentUser, setCurrentUser] = useState({
+    username: '',
     avatarUrl: 'https://via.placeholder.com/40'
-  };
+  });
+
+  useEffect(() => {
+    const username = localStorage.getItem('username');
+    if (username) {
+      setCurrentUser(prev => ({
+        ...prev,
+        username: username
+      }));
+    }
+  }, []);
 
   return (
     <nav className="navBar">
@@ -16,7 +25,7 @@ function Navbar() {
         <div className="logo">
           <a href="/">
             <img
-              src={logoImage} // will need to change
+              src={logoImage}
               alt="The Social Petwork Logo"
             />
           </a>
@@ -45,7 +54,9 @@ function Navbar() {
               className="avatar-picture"
               alt="User avatar"
             />
-            <span className="name">{currentUser.username}</span>
+            <span className="name">
+              {currentUser.username ? currentUser.username : "User"}
+            </span>
           </a>
         </div>
       </div>
