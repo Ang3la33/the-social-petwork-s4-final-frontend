@@ -306,13 +306,13 @@ body, html, #root {
 
 /* Register ********************************************************/
 body, html, #root {
-  height: 100%;
+  height: auto;
   margin: 0;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 .register-wrapper {
-  height: 100vh;
+  height: auto;
   width: 100%;
   background: linear-gradient(135deg, #F8882C, #69A297);
   display: flex;
