@@ -45,7 +45,7 @@ function Navbar() {
               className="avatar-picture"
               alt="User avatar"
             />
-            <span className="username">{currentUser.username}</span>
+            <span className="name">{currentUser.username}</span>
           </a>
         </div>
       </div>
