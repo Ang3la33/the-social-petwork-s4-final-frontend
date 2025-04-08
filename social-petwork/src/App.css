@@ -408,3 +408,95 @@ body, html, #root {
     margin: 10px 0;
   }
 }
+
+/* Profile Page */
+.profile-page {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+  font-family: Arial, sans-serif;
+}
+
+/* Header Layout */
+.profile-header {
+  margin: 20px 0;
+}
+
+/* Left side layout with avatar and user info in a row */
+.profile-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* Avatar styling */
+.avatar {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+/* Grouping username and edit icon */
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* Username styling */
+.username {
+  font-size: 24px;
+  font-weight: bold;
+  margin: 0; /* Reset margin if needed */
+}
+
+/* Edit icon link styling */
+.edit-icon-link {
+  text-decoration: none;
+}
+
+/* Edit icon styling */
+.edit-icon {
+  color: orange;
+  font-size: 24px;
+  transition: color 0.3s ease;
+}
+
+.edit-icon:hover {
+  color: darkorange;
+}
+
+/* Additional styles that you might already have */
+/* Right side, posts-section, etc. can remain unchanged or be added later */
+.profile-right {
+  display: flex;
+  align-items: center;
+}
+
+.profile-stats {
+  display: flex;
+  gap: 20px;
+}
+
+.stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.number {
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.caption {
+  font-size: 14px;
+  color: #555;
+}
+
+/* Posts section styling */
+.posts-section {
+  border-top: 1px solid #e1e1e1;
+  padding-top: 20px;
+}
