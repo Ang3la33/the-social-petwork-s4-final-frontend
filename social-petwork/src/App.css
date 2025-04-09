@@ -622,15 +622,234 @@ body, html, #root {
   align-items: center;        
 }
 
-/* NOT WORKING */
+/* General Page Layout */
+.post-page-wrapper {
+  display: flex;
+  justify-content: space-between;
+  padding: 20px;
+}
+
+.post-page-box {
+  display: flex;
+  width: 100%;
+}
+
+/* Left Section: Posts Feed */
+.posts-feed {
+  width: 70%;
+}
+
+.post-box {
+  background-color: #fff;
+  padding: 15px;
+ border: 0.5px solid #69A297;
+  margin-bottom: 20px;
+  border-radius: 10px;
+}
+
+.post-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 5px;
+}
+
+
+.post-time {
+  font-size: 12px;
+  color: #000000;
+  margin-left: auto;
+  margin-top: 5px;
+}
+
+.post-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+}
+
+.post-user-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.post-username {
+  font-weight: bold;
+}
+
+.post-time {
+  font-size: 12px;
+  color: #7a7878;
+}
+
+.post-content {
+  margin-top: 10px;
+}
+
+.post-footer {
+  margin-top: 10px;
+}
+
 .comment-icon {
-  font-size: 20px; 
-  color: #ff9100; 
+  font-size: 18px;
+  color: #ff9100;
   cursor: pointer;
-  transition: color 0.3s ease, transform 0.2s ease;
+  transition: color 0.3s;
 }
 
 .comment-icon:hover {
-  color: #ff9100;     
-  transform: scale(1.1);
+  color: #444;
+}
+
+/* Right Section: User Profile and Suggested People */
+.post-page-box {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  gap: 20px;
+  align-items: flex-start;
+  padding: 20px;
+}
+
+.posts-feed {
+  flex: 1;
+  min-width: 0; 
+}
+
+.right-sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: 300px;
+  min-width: 250px;
+}
+.right-sidebar {
+  width: 300px;
+  min-width: 260px;
+  flex-shrink: 0; 
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.user-profile-box {
+  background-color: #fff;
+  padding: 20px;
+  border: 0.5px solid #ff9100;
+  border-radius: 10px;
+  margin-bottom: 20px;
+  text-align: center;
+  width: 100%; 
+  box-sizing: border-box; 
+}
+
+.user-avatar {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  border: 4px solid #ff9100;
+}
+
+.user-username {
+  font-size: 20px;
+  font-weight: bold;
+  margin-top: 10px;
+  color: #69A297;
+}
+
+.user-stats {
+  display: flex;
+  flex-direction: row;
+  justify-content: center; 
+  gap: 30px; 
+  margin-top: 20px;
+  text-align: center;
+}
+
+.stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center; 
+}
+.stat-label {
+  font-size: 16px;
+  color: #69A297;
+  text-decoration: underline;
+  margin-bottom: px;
+}
+
+.stat-number {
+  font-weight: bold;
+}
+
+/* People you may know and user info*/
+.people-you-may-know {
+  background-color: #fff;
+  padding: 8px;
+  border: 0.5px solid #ff9100;;
+  border-radius: 10px;
+  align-items: center;
+  flex-direction:inherit;
+}
+
+.suggested-people {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+
+}
+
+h4{
+  color: #F8882C;
+  margin-left: 30px;
+}
+
+.suggested-person {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  
+}
+
+.suggested-person-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  
+}
+
+.suggested-person-name {
+  font-weight: bold;
+   align-items: center;
+}
+
+/* Comment - Input and Button*/
+
+.comment-box {
+  margin-top: 10px;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  color: #000000;
+}
+
+.comment-input {
+  flex: 1;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  background-color: #F7D9B5;;
+}
+
+.comment-submit {
+  background-color: #69A297;
+  border: none;
+  color: white;
+  padding: 8px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.comment-submit:hover {
+  background-color: #F8882C;
 }

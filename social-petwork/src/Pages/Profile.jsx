@@ -22,8 +22,8 @@ function Profile() {
     // Fetch user profile data
     fetch(`http://localhost:8080/users/${userId}`, {
       headers: {
-        Authorization: `Bearer ${token}`
-      }
+        Authorization: `Bearer ${token}`,
+      },
     })
       .then((res) => {
         if (!res.ok) throw new Error("Failed to fetch user data.");
@@ -38,8 +38,8 @@ function Profile() {
     // Fetch user's posts
     fetch(`http://localhost:8080/users/${userId}/posts`, {
       headers: {
-        Authorization: `Bearer ${token}`
-      }
+        Authorization: `Bearer ${token}`,
+      },
     })
       .then((res) => {
         if (!res.ok) throw new Error("Failed to fetch posts.");
@@ -62,7 +62,11 @@ function Profile() {
         {/* Header */}
         <div className="profile-header">
           <div className="profile-left">
-            <img src={filler} alt="Avatar" className="avatar" />
+            <img
+              src={user.avatar || filler}
+              alt="Avatar"
+              className="avatar"
+            />
             <div className="user-info">
               <h3 className="username">{user.username}</h3>
               <Link to="/edit-profile" className="edit-icon-link">
@@ -79,11 +83,11 @@ function Profile() {
               </div>
               <div className="stat">
                 <span className="caption">Followers</span>
-                <span className="number">--</span>
+                <span className="number">{user.followers || "--"}</span>
               </div>
               <div className="stat">
                 <span className="caption">Following</span>
-                <span className="number">--</span>
+                <span className="number">{user.following || "--"}</span>
               </div>
             </div>
           </div>
@@ -92,7 +96,11 @@ function Profile() {
         {/* Birthday Section */}
         <div className="birthday-section">
           <h4 className="birthday-header">Birthday</h4>
-          <p>{user.birthday && user.birthday !== "empty" ? user.birthday : "Not set yet"}</p>
+          <p>
+            {user.birthday && user.birthday !== "empty"
+              ? user.birthday
+              : "Not set yet"}
+          </p>
         </div>
 
         {/* About Me Section */}
@@ -114,22 +122,12 @@ function Profile() {
         <div className="posts-section">
           <h4 className="posts-header">My Posts</h4>
           {posts.length === 0 ? (
-            <p className="post-placeholder">You haven't posted anything yet.</p>
+            <p className="post-placeholder">
+              You haven't posted anything yet.
+            </p>
           ) : (
             posts.map((post) => (
-              <div key={post.id} className="post-box">
-                <div className="post-header">
-                  <img src={filler} alt="Avatar" className="post-avatar" />
-                  <div className="post-user-info">
-                    <span className="post-username">{user.username}</span>
-                    <span className="post-time">{post.timestamp || "Just now"}</span>
-                  </div>
-                </div>
-                <p className="post-content">{post.content}</p>
-                <div className="post-footer">
-                  <LiaComment />
-                </div>
-              </div>
+              <ProfilePost key={post.id} post={post} user={user} />
             ))
           )}
         </div>
@@ -138,4 +136,60 @@ function Profile() {
   );
 }
 
+function ProfilePost({ post, user }) {
+  const [showCommentBox, setShowCommentBox] = useState(false);
+  const [comment, setComment] = useState("");
+
+  const handleCommentClick = () => {
+    setShowCommentBox((prev) => !prev);
+  };
+
+  return (
+    <div className="post-box">
+      {/* Post Header */}
+      <div className="post-header">
+        <div className="post-user-info">
+          <img
+            src={user.avatar || filler}
+            alt="Avatar"
+            className="post-avatar"
+          />
+          <span className="post-username">{user.username}</span>
+        </div>
+        <span className="post-time">
+          {post.timestamp
+            ? new Date(post.timestamp).toLocaleString()
+            : "Just now"}
+        </span>
+      </div>
+
+      {/* Post Content */}
+      <p className="post-content">{post.content}</p>
+
+      {/* Post Footer with Comment Icon */}
+      <div className="post-footer">
+        <LiaComment
+          className="comment-icon"
+          onClick={handleCommentClick}
+        />
+      </div>
+
+      {/* Comment Input Box */}
+      {showCommentBox && (
+        <div className="comment-box">
+          <input
+            type="text"
+            value={comment}
+            onChange={(e) => setComment(e.target.value)}
+            placeholder="Woof! Share your thoughts here..."
+            className="comment-input"
+          />
+          <button className="comment-submit">Post</button>
+        </div>
+      )}
+    </div>
+  );
+}
+
 export default Profile;
+
