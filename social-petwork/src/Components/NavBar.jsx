@@ -30,7 +30,7 @@ function Navbar() {
         </div>
 
         <div className="nav-link">
-          <a href="/create-post" className="nav-link">
+          <a href="/post" className="nav-link">
             Create Post
           </a>
           <a href="/browse-users" className="nav-link">

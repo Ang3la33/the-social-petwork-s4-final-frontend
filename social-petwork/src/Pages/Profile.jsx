@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { FaEdit } from "react-icons/fa";
 import { LiaComment } from "react-icons/lia";
 import { Link } from "react-router-dom";
@@ -14,8 +14,7 @@ function Profile() {
     followers: 2020,
     posts: 22,
     following: 75,
-    about:
-      "Hi! I'm Deino. I am a fat pug who loves to sleep and eat!",
+    about: "Hi! I'm Deino. I am a fat pug who loves to sleep and eat!",
     postDetails: [
       {
         postId: 1,
@@ -80,26 +79,54 @@ function Profile() {
         <div className="posts-section">
           <h4 className="posts-header">My Posts</h4>
           {user.postDetails.map((post) => (
-            <div key={post.postId} className="post-box">
-              <div className="post-header">
-                <img src={user.avatar} alt="Avatar" className="post-avatar" />
-                <div className="post-user-info">
-                  <span className="post-username">{user.username}</span>
-                  <span className="post-time">{post.postTime}</span>
-                </div>
-              </div>
-
-              {/* Post Content */}
-              <p className="post-content">{post.content}</p>
-
-              {/* Comment Icon */}
-              <div className="post-footer">
-                <LiaComment />
-              </div>
-            </div>
+            <ProfilePost key={post.postId} post={post} user={user} />
           ))}
         </div>
       </div>
+    </div>
+  );
+}
+
+function ProfilePost({ post, user }) {
+  const [showCommentBox, setShowCommentBox] = useState(false);
+  const [comment, setComment] = useState("");
+
+  const handleCommentClick = () => {
+    setShowCommentBox((prev) => !prev);
+  };
+
+  return (
+    <div className="post-box">
+      {/* Post Header */}
+      <div className="post-header">
+        <div className="post-user-info">
+          <img src={user.avatar} alt="Avatar" className="post-avatar" />
+          <span className="post-username">{user.username}</span>
+        </div>
+        <span className="post-time">{post.postTime}</span>
+      </div>
+
+      {/* Post Content */}
+      <p className="post-content">{post.content}</p>
+
+      {/* Post Footer */}
+      <div className="post-footer">
+        <LiaComment className="comment-icon" onClick={handleCommentClick} />
+      </div>
+
+      {/* Comment Input Box */}
+      {showCommentBox && (
+        <div className="comment-box">
+          <input
+            type="text"
+            value={comment}
+            onChange={(e) => setComment(e.target.value)}
+            placeholder="Write a comment..."
+            className="comment-input"
+          />
+          <button className="comment-submit">Post</button>
+        </div>
+      )}
     </div>
   );
 }
