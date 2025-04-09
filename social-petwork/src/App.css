@@ -543,6 +543,17 @@ body, html, #root {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
+/* Birthday Section */
+.birthday-header {
+  font-size: 18px;
+  color: #ff9100;
+  font-weight: bold;
+  margin: 10px;
+}
+.birthday-section p {
+  font-size: 12px;
+  margin: 10px;
+}
 
 /* Post Section */
 .posts-section {
