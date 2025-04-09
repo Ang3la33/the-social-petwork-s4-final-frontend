@@ -9,6 +9,7 @@ import Login from './Pages/Login';
 import Post from "./Pages/Post";
 import Profile from './Pages/Profile';
 import Register from './Pages/Register';
+import EditProfile from './Pages/EditProfile';
 
 function Layout() {
   const location = useLocation();
@@ -26,6 +27,7 @@ function Layout() {
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/profile" element={<Profile />} />
+          <Route path="/edit-profile" element={<EditProfile />} />
         </Routes>
       </main>
 

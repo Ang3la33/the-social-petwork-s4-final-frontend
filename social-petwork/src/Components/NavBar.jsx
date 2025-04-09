@@ -23,7 +23,7 @@ function Navbar() {
     <nav className="navBar">
       <div className="navBar-Container">
         <div className="logo">
-          <a href="/">
+          <a href="/post">
             <img
               src={logoImage}
               alt="The Social Petwork Logo"

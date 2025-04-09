@@ -107,7 +107,7 @@ function Profile() {
         <div className="about-me-section">
           <div className="about-header">
             <h4>About Me</h4>
-            <Link to="/edit-about" className="edit-icon-link">
+            <Link to="/edit-profile" className="edit-icon-link">
               <FaEdit className="edit-icon" />
             </Link>
           </div>
@@ -192,4 +192,3 @@ function ProfilePost({ post, user }) {
 }
 
 export default Profile;
-
