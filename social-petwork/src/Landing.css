@@ -1,5 +1,5 @@
 body {
-    cursor: url('/social-petwork/src/Assets/Images/paw-cursor.png') 16 16, auto;
+    cursor: url('./Assets/Images/paw-cursor.png'), auto;
   }
 
 .landing-container {
