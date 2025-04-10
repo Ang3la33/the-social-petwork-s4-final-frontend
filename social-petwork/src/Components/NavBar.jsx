@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { FaSearch } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
 import '../App.css';
 import logoImage from '../Assets/Images/greenLogo.png';
 
@@ -9,15 +10,24 @@ function Navbar() {
     avatarUrl: 'https://via.placeholder.com/40'
   });
 
+  const navigate = useNavigate();
+
   useEffect(() => {
     const username = localStorage.getItem('username');
+    const avatar = localStorage.getItem('avatar'); // optional if you want to save avatar too
     if (username) {
       setCurrentUser(prev => ({
         ...prev,
-        username: username
+        username,
+        avatarUrl: avatar || prev.avatarUrl
       }));
     }
   }, []);
+
+  const handleLogout = () => {
+    localStorage.clear(); // Remove token, userId, username, etc.
+    navigate("/login");   // Redirect to login
+  };
 
   return (
     <nav className="navBar">
@@ -58,6 +68,9 @@ function Navbar() {
               {currentUser.username ? currentUser.username : "User"}
             </span>
           </a>
+          <button className="logout-button" onClick={handleLogout}>
+            Log Out
+          </button>
         </div>
       </div>
     </nav>

@@ -118,6 +118,23 @@
   border: 2px solid #ff9100;
 }
 
+.logout-button {
+  margin-left: 10px;
+  padding: 6px 12px;
+  background-color: #ff9100;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+}
+
+.logout-button:hover {
+  background-color: #d67b03;
+}
+
+
 /* Responsive adjustments */
 @media (min-width: 769px) {
   .navBar-Container {
@@ -947,4 +964,39 @@ h4{
   margin-top: 15px;
   color: green;
   font-weight: bold;
+}
+
+
+/* Create Post Box */
+.create-post-input {
+  width: 90%;
+  min-height: 80px;
+  padding: 12px;
+  font-size: 1rem;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  resize: vertical;
+  outline: none;
+  transition: border-color 0.2s ease;
+}
+
+.create-post-input:focus {
+  border-color: #ff9100;
+  box-shadow: 0 0 0 2px rgba(0, 184, 148, 0.2);
+}
+
+.create-post-button {
+  margin-top: 10px;
+  padding: 10px 18px;
+  background-color: #ff9100;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.create-post-button:hover {
+  background-color: #d67c06;
 }
