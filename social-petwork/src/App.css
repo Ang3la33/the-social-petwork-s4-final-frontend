@@ -1000,3 +1000,18 @@ h4{
 .create-post-button:hover {
   background-color: #d67c06;
 }
+
+.post-image-box {
+  display: flex;
+  justify-content: center;
+  margin-top: 12px;
+}
+
+.post-image {
+  width: 90%;
+  height: auto;
+  max-height: 400px;
+  object-fit: cover;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}

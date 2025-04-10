@@ -126,7 +126,7 @@ function Profile() {
               You haven't posted anything yet.
             </p>
           ) : (
-            posts.map((post) => (
+            [...posts].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)).map((post) => (
               <ProfilePost key={post.id} post={post} user={user} />
             ))
           )}
@@ -157,8 +157,8 @@ function ProfilePost({ post, user }) {
           <span className="post-username">{user.username}</span>
         </div>
         <span className="post-time">
-          {post.timestamp
-            ? new Date(post.timestamp).toLocaleString()
+          {post.createdAt
+            ? new Date(post.createdAt).toLocaleString()
             : "Just now"}
         </span>
       </div>
@@ -166,12 +166,19 @@ function ProfilePost({ post, user }) {
       {/* Post Content */}
       <p className="post-content">{post.content}</p>
 
+      {post.imageUrl && (
+        <div className="post-image-box">
+          <img
+            src={`http://localhost:8080${post.imageUrl}`}
+            alt="Post visual"
+            className="post-image"
+          />
+        </div>
+      )}
+
       {/* Post Footer with Comment Icon */}
       <div className="post-footer">
-        <LiaComment
-          className="comment-icon"
-          onClick={handleCommentClick}
-        />
+        <LiaComment className="comment-icon" onClick={handleCommentClick} />
       </div>
 
       {/* Comment Input Box */}

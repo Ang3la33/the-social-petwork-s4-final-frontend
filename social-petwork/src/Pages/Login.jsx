@@ -40,7 +40,7 @@ function Login() {
         localStorage.setItem("role", data.role);
         localStorage.setItem("userId", data.userId);
 
-        navigate("/profile"); // Redirect on success
+        navigate("/post"); // Redirect on success
       } else {
         const msg = await response.text();
         setError(msg || "Login failed");

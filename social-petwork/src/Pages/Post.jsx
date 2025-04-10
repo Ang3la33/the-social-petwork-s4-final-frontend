@@ -8,6 +8,7 @@ function Post() {
   const [user, setUser] = useState(null);
   const [posts, setPosts] = useState([]);
   const [newPostContent, setNewPostContent] = useState("");
+  const [imageFile, setImageFile] = useState(null);
 
   const userId = localStorage.getItem("userId");
   const token = localStorage.getItem("token");
@@ -18,7 +19,6 @@ function Post() {
     { id: 3, name: "Ralph", avatar: filler },
   ];
 
-  // Fetch user info
   useEffect(() => {
     if (!userId || !token) return;
 
@@ -30,40 +30,38 @@ function Post() {
       .catch((err) => console.error("Failed to fetch user", err));
   }, [userId, token]);
 
-  // Fetch posts on mount + auto-refresh every 10s
   useEffect(() => {
     const fetchPosts = () => {
       axios
-        .get("http://localhost:8080/posts") // ✅ No Authorization header here
-        .then((res) => {
-          console.log("Fetched posts:", res.data); // Optional debug
-          setPosts(res.data);
-        })
+        .get("http://localhost:8080/posts")
+        .then((res) => setPosts(res.data))
         .catch((err) => console.error("Failed to fetch posts:", err));
     };
-  
-    fetchPosts(); // Initial load
-    const interval = setInterval(fetchPosts, 10000); // Auto-refresh every 10s
-  
-    return () => clearInterval(interval); // Cleanup
+
+    fetchPosts();
+    const interval = setInterval(fetchPosts, 10000);
+    return () => clearInterval(interval);
   }, []);
 
   const handlePostSubmit = () => {
     if (!newPostContent.trim() || !user) return;
 
-    const newPost = {
-      content: newPostContent,
-    };
+    const formData = new FormData();
+    formData.append("content", newPostContent);
+    formData.append("userId", user.id);
+    if (imageFile) {
+      formData.append("image", imageFile);
+    }
 
     axios
-      .post(`http://localhost:8080/posts?userId=${user.id}`, newPost, {
+      .post("http://localhost:8080/posts", formData, {
         headers: {
-          "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
       })
       .then(() => {
         setNewPostContent("");
+        setImageFile(null);
         return axios.get("http://localhost:8080/posts");
       })
       .then((res) => setPosts(res.data))
@@ -75,9 +73,7 @@ function Post() {
   return (
     <div className="post-page-wrapper">
       <div className="post-page-box">
-        {/* Left Section Feed */}
         <div className="posts-feed">
-          {/* Create Post Box */}
           <div className="create-post-box">
             <textarea
               placeholder="What's barking today?"
@@ -85,12 +81,17 @@ function Post() {
               onChange={(e) => setNewPostContent(e.target.value)}
               className="create-post-input"
             />
+            <input
+              type="file"
+              accept="image/*"
+              onChange={(e) => setImageFile(e.target.files[0])}
+              className="image-input"
+            />
             <button className="create-post-button" onClick={handlePostSubmit}>
               Post
             </button>
           </div>
 
-          {/* Posts Feed */}
           {[...posts]
             .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
             .map((post) => (
@@ -98,7 +99,6 @@ function Post() {
             ))}
         </div>
 
-        {/* Right Sidebar (unchanged) */}
         <div className="right-sidebar">
           {user && (
             <div className="user-profile-box">
@@ -171,6 +171,16 @@ function PostBox({ post }) {
       </div>
 
       <p className="post-content">{post.content}</p>
+
+      {post.imageUrl && (
+        <div className="post-image-box">
+          <img
+            src={`http://localhost:8080${post.imageUrl}`}
+            alt="Post visual"
+            className="post-image"
+          />
+        </div>
+      )}
 
       <div className="post-footer">
         <LiaComment className="comment-icon" onClick={handleCommentClick} />
