@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { LiaComment } from "react-icons/lia";
 import axios from "axios";
 import "../App.css";
@@ -95,7 +95,7 @@ function Post() {
           {[...posts]
             .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
             .map((post) => (
-              <PostBox key={post.id} post={post} />
+              <PostBox key={post.id} post={post} user={user} token={token} />
             ))}
         </div>
 
@@ -146,13 +146,57 @@ function Post() {
   );
 }
 
-function PostBox({ post }) {
+function PostBox({ post, user, token }) {
   const [showCommentBox, setShowCommentBox] = useState(false);
   const [comment, setComment] = useState("");
+  const [comments, setComments] = useState([]);
 
-  const handleCommentClick = () => {
-    setShowCommentBox((prev) => !prev);
-  };
+  const fetchComments = useCallback(() => {
+    axios
+      .get(`http://localhost:8080/comments/post/${post.id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      .then((res) => {
+        const sorted = [...res.data].sort(
+          (a, b) => new Date(b.postedAt) - new Date(a.postedAt)
+        );
+        setComments(sorted);
+      })
+      .catch((err) => console.error("Failed to fetch comments:", err));
+  }, [post.id, token]);
+
+  useEffect(() => {
+    if (showCommentBox) {
+      fetchComments();
+    }
+  }, [showCommentBox, fetchComments]);
+
+  const handleCommentSubmit = () => {
+    if (!comment.trim() || !user) return;
+  
+    console.log("📤 Submitting comment:", comment);
+  
+    axios
+      .post("http://localhost:8080/comments", {
+        content: comment,
+        user: { id: user.id },
+        post: { id: post.id },
+      }, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      })
+      .then(() => {
+        setComment("");
+        fetchComments();
+      })
+      .catch((err) => {
+        console.error("❌ Failed to post comment:", err.response?.data || err.message);
+      });
+  };  
 
   return (
     <div className="post-box">
@@ -183,19 +227,34 @@ function PostBox({ post }) {
       )}
 
       <div className="post-footer">
-        <LiaComment className="comment-icon" onClick={handleCommentClick} />
+        <LiaComment
+          className="comment-icon"
+          onClick={() => setShowCommentBox((prev) => !prev)}
+        />
       </div>
 
       {showCommentBox && (
-        <div className="comment-box">
-          <input
-            type="text"
-            value={comment}
-            onChange={(e) => setComment(e.target.value)}
-            placeholder="Paw in your ideas..."
-            className="comment-input"
-          />
-          <button className="comment-submit">Comment</button>
+        <div className="comment-section">
+          <div className="comment-box">
+            <input
+              type="text"
+              value={comment}
+              onChange={(e) => setComment(e.target.value)}
+              placeholder="Paw in your ideas..."
+              className="comment-input"
+            />
+            <button className="comment-submit" onClick={handleCommentSubmit}>
+              Comment
+            </button>
+          </div>
+
+          <div className="comment-list">
+            {comments.map((c) => (
+              <div key={c.id} className="comment-item">
+                <strong>{c.username || "Anonymous"}</strong>: {c.content}
+              </div>
+            ))}
+          </div>
         </div>
       )}
     </div>

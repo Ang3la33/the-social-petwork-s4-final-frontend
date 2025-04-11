@@ -865,7 +865,8 @@ h4{
   padding: 8px;
   border: 1px solid #ccc;
   border-radius: 6px;
-  background-color: #F7D9B5;;
+  background-color: #F7D9B5;
+  margin-bottom: 10px;
 }
 
 .comment-submit {
@@ -881,6 +882,17 @@ h4{
   background-color: #F8882C;
 }
 
+.comment-list {
+  flex: 1;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  background-color: #aad3ca9f;
+}
+.comment-item {
+  font-size: small;
+  margin: 5px;
+}
 
 /* Edit Profile *****************************************************************/
 .edit-wrapper {
