@@ -749,19 +749,14 @@ body, html, #root {
 }
 
 .right-sidebar {
+  position: sticky;
+  top: 190px;
+  align-self: flex-start;
   display: flex;
   flex-direction: column;
   gap: 20px;
   width: 300px;
   min-width: 250px;
-}
-.right-sidebar {
-  width: 300px;
-  min-width: 260px;
-  flex-shrink: 0; 
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
 }
 
 .user-profile-box {
