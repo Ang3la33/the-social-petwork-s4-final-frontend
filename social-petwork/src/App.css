@@ -889,9 +889,41 @@ h4{
   border-radius: 6px;
   background-color: #aad3ca9f;
 }
-.comment-item {
-  font-size: small;
-  margin: 5px;
+.comment-item-post {
+  font-size: 0.8rem;
+  padding: 4px 0;
+}
+
+.comment-item-profile {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.8rem;
+  padding: 4px 0;
+}
+
+.comment-delete {
+  margin-left: 12px;
+  color: #e74c3c;
+  cursor: pointer;
+}
+
+.post-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.post-header-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.delete-icon {
+  cursor: pointer;
+  color: #e74c3c;
+  margin-left: auto;
 }
 
 /* Edit Profile *****************************************************************/

@@ -250,7 +250,7 @@ function PostBox({ post, user, token }) {
 
           <div className="comment-list">
             {comments.map((c) => (
-              <div key={c.id} className="comment-item">
+              <div key={c.id} className="comment-item-post">
                 <strong>{c.username || "Anonymous"}</strong>: {c.content}
               </div>
             ))}
