@@ -201,15 +201,12 @@ function PostBox({ post, user, token }) {
   return (
     <div className="post-box">
       <div className="post-header">
-<<<<<<< HEAD
         <img src={post.avatarUrl} alt="Avatar" className="post-avatar" />
-=======
         <img
           src={post.user?.avatar || filler}
           alt="Avatar"
           className="post-avatar"
         />
->>>>>>> 8a45acf0fe3b43a480a5ece96972e0518a77f4d1
         <div className="post-user-info">
           <span className="post-username">{post.user?.username || "Unknown"}</span>
           <span className="post-time">

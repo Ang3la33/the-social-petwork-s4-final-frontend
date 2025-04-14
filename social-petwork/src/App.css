@@ -1020,7 +1020,6 @@ h4{
   font-weight: bold;
 }
 
-<<<<<<< HEAD
 .avatar-uploader {
   display: flex;
   flex-direction: column;
@@ -1031,54 +1030,4 @@ h4{
   margin-bottom: 10px;
   border-radius: 50%;
   object-fit: cover;
-=======
-
-/* Create Post Box */
-.create-post-input {
-  width: 90%;
-  min-height: 80px;
-  padding: 12px;
-  font-size: 1rem;
-  border-radius: 8px;
-  border: 1px solid #ddd;
-  resize: vertical;
-  outline: none;
-  transition: border-color 0.2s ease;
-}
-
-.create-post-input:focus {
-  border-color: #ff9100;
-  box-shadow: 0 0 0 2px rgba(0, 184, 148, 0.2);
-}
-
-.create-post-button {
-  margin-top: 10px;
-  padding: 10px 18px;
-  background-color: #ff9100;
-  color: white;
-  border: none;
-  border-radius: 8px;
-  font-weight: bold;
-  cursor: pointer;
-  transition: background-color 0.2s ease;
-}
-
-.create-post-button:hover {
-  background-color: #d67c06;
-}
-
-.post-image-box {
-  display: flex;
-  justify-content: center;
-  margin-top: 12px;
-}
-
-.post-image {
-  width: 90%;
-  height: auto;
-  max-height: 400px;
-  object-fit: cover;
-  border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
->>>>>>> 8a45acf0fe3b43a480a5ece96972e0518a77f4d1
 }

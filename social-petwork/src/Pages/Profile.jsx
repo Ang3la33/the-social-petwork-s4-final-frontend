@@ -64,15 +64,11 @@ function Profile() {
       <div className="profile-box">
         <div className="profile-header">
           <div className="profile-left">
-<<<<<<< HEAD
             <img
               src={user.avatarUrl || filler}
               alt="Avatar"
               className="avatar"
             />
-=======
-            <img src={user.avatar || filler} alt="Avatar" className="avatar" />
->>>>>>> 8a45acf0fe3b43a480a5ece96972e0518a77f4d1
             <div className="user-info">
               <h3 className="username">{user.username}</h3>
               <Link to="/edit-profile" className="edit-icon-link">
