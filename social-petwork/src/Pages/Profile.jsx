@@ -4,6 +4,7 @@ import { LiaComment } from "react-icons/lia";
 import { Link, useNavigate } from "react-router-dom";
 import "../App.css";
 import filler from "../Assets/Images/filler.png";
+import AvatarUploader from "../Components/AvatarUploader";
 
 function Profile() {
   const navigate = useNavigate();
@@ -63,7 +64,7 @@ function Profile() {
         <div className="profile-header">
           <div className="profile-left">
             <img
-              src={user.avatar || filler}
+              src={user.avatarUrl || filler}
               alt="Avatar"
               className="avatar"
             />
@@ -150,7 +151,7 @@ function ProfilePost({ post, user }) {
       <div className="post-header">
         <div className="post-user-info">
           <img
-            src={user.avatar || filler}
+            src={user.avatarUrl || filler}
             alt="Avatar"
             className="post-avatar"
           />

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../App.css";
 import filler from "../Assets/Images/filler.png";
+import AvatarUploader from "../Components/AvatarUploader";
 
 function EditProfile() {
   const userId = localStorage.getItem("userId");
@@ -36,7 +37,8 @@ function EditProfile() {
           username: data.username || "",
           password: "",
           birthday: data.birthday || "",
-          about: data.about || ""
+          about: data.about || "",
+          avatarUrl: data.avatarUrl || ""
         });
       })
       .catch(() => navigate("/login"));
@@ -78,12 +80,12 @@ function EditProfile() {
   return (
     <div className="edit-wrapper">
       <div className="edit-box">
-        <div className="avatar-section">
-          <img src={filler} alt="Profile" className="edit-avatar" />
-          <button className="change-photo-button" disabled>
-            <span className="edit-icon">✎</span> Change Photo
-          </button>
-        </div>
+          <div className="avatar-section">
+            <AvatarUploader
+            userId={userId}
+            initialAvatarUrl={formData.avatarUrl}
+            />
+          </div>
 
         <form onSubmit={handleSubmit} className="edit-form">
           <label>Edit Name</label>

@@ -104,7 +104,7 @@ function PostBox({ post }) {
   return (
     <div className="post-box">
       <div className="post-header">
-        <img src={post.avatar} alt="Avatar" className="post-avatar" />
+        <img src={post.avatarUrl} alt="Avatar" className="post-avatar" />
         <div className="post-user-info">
           <span className="post-username">{post.username}</span>
           <span className="post-time">
