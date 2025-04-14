@@ -1031,3 +1031,96 @@ h4{
   border-radius: 50%;
   object-fit: cover;
 }
+
+
+/* Browse User Page */
+.browse-users-wrapper {
+ padding: 2rem;
+ max-width: 800px;
+ margin: 0 auto;
+}
+
+
+.browse-users-list {
+ display: flex;
+ flex-direction: column;
+ gap: 1rem;
+   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+
+.browse-user-card {
+ display: flex;
+ justify-content: space-between;
+ align-items: center;
+ border: 2px solid #69A297;
+ padding: 1rem;
+ border-radius: 12px;
+ background-color: #e0efef;
+ box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+
+.browse-user-left {
+ display: flex;
+ align-items: center;
+}
+
+
+.browse-user-avatar {
+ width: 60px;
+ height: 60px;
+ border-radius: 50%;
+ object-fit: cover;
+ margin-right: 1rem;
+ border: 2px solid #FF9A47;
+   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+
+.browse-user-info h4 {
+ margin: 0;
+ font-size: 1.2rem;
+ color: #FF9A47;
+}
+
+
+.browse-user-info p {
+ margin: 0.3rem 0 0 0;
+ font-size: 0.9rem;
+ color: #000000;
+}
+
+
+.browse-user-right {
+ display: flex;
+ align-items: center;
+}
+
+
+.follow-button {
+ background-color: #FF9A47;
+ color: white;
+ padding: 0.5rem 1rem;
+ border: none;
+ border-radius: 20px;
+ cursor: pointer;
+ transition: background-color 0.2s;
+}
+
+
+.follow-button:hover {
+ background-color: #e98b30;
+}
+
+
+
+h2 {
+  color: #000000; 
+  font-size: 26px; 
+  font-weight: 600; 
+  text-align: center; 
+  margin-bottom: 20px;
+  text-transform: capitalize;
+  letter-spacing: 1px; 
+}

@@ -4,12 +4,14 @@ import { Route, BrowserRouter as Router, Routes, useLocation } from 'react-route
 import Footer from './Components/Footer';
 import Navbar from './Components/NavBar';
 
+import BrowseUsers from "./Pages/BrowseUsers";
+import EditProfile from './Pages/EditProfile';
 import Landing from './Pages/Landing';
 import Login from './Pages/Login';
 import Post from "./Pages/Post";
 import Profile from './Pages/Profile';
 import Register from './Pages/Register';
-import EditProfile from './Pages/EditProfile';
+
 
 function Layout() {
   const location = useLocation();
@@ -25,6 +27,8 @@ function Layout() {
           <Route path="/" element={<Landing />} />
           <Route path="/post" element={<Post />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/browse-users" element={<BrowseUsers />} />
+
           <Route path="/register" element={<Register />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/edit-profile" element={<EditProfile />} />
