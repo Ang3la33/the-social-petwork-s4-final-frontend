@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { FaEdit } from "react-icons/fa";
+import { FaTrashAlt, FaEdit } from "react-icons/fa";
 import { LiaComment } from "react-icons/lia";
 import { Link, useNavigate } from "react-router-dom";
 import "../App.css";
@@ -20,7 +20,6 @@ function Profile() {
       return;
     }
 
-    // Fetch user profile data
     fetch(`http://localhost:8080/users/${userId}`, {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -36,7 +35,6 @@ function Profile() {
         navigate("/login");
       });
 
-    // Fetch user's posts
     fetch(`http://localhost:8080/users/${userId}/posts`, {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -53,6 +51,10 @@ function Profile() {
       });
   }, [userId, token, navigate]);
 
+  const removePostFromList = (deletedPostId) => {
+    setPosts((prev) => prev.filter((p) => p.id !== deletedPostId));
+  };
+
   if (!user) {
     return <div className="profile-wrapper">Loading profile...</div>;
   }
@@ -60,14 +62,17 @@ function Profile() {
   return (
     <div className="profile-wrapper">
       <div className="profile-box">
-        {/* Header */}
         <div className="profile-header">
           <div className="profile-left">
+<<<<<<< HEAD
             <img
               src={user.avatarUrl || filler}
               alt="Avatar"
               className="avatar"
             />
+=======
+            <img src={user.avatar || filler} alt="Avatar" className="avatar" />
+>>>>>>> 8a45acf0fe3b43a480a5ece96972e0518a77f4d1
             <div className="user-info">
               <h3 className="username">{user.username}</h3>
               <Link to="/edit-profile" className="edit-icon-link">
@@ -94,7 +99,6 @@ function Profile() {
           </div>
         </div>
 
-        {/* Birthday Section */}
         <div className="birthday-section">
           <h4 className="birthday-header">Birthday</h4>
           <p>
@@ -104,7 +108,6 @@ function Profile() {
           </p>
         </div>
 
-        {/* About Me Section */}
         <div className="about-me-section">
           <div className="about-header">
             <h4>About Me</h4>
@@ -119,7 +122,6 @@ function Profile() {
           </p>
         </div>
 
-        {/* Post Section */}
         <div className="posts-section">
           <h4 className="posts-header">My Posts</h4>
           {posts.length === 0 ? (
@@ -127,9 +129,17 @@ function Profile() {
               You haven't posted anything yet.
             </p>
           ) : (
-            posts.map((post) => (
-              <ProfilePost key={post.id} post={post} user={user} />
-            ))
+            [...posts]
+              .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+              .map((post) => (
+                <ProfilePost
+                  key={post.id}
+                  post={post}
+                  user={user}
+                  token={token}
+                  onDelete={removePostFromList}
+                />
+              ))
           )}
         </div>
       </div>
@@ -137,17 +147,81 @@ function Profile() {
   );
 }
 
-function ProfilePost({ post, user }) {
+function ProfilePost({ post, user, token, onDelete }) {
   const [showCommentBox, setShowCommentBox] = useState(false);
   const [comment, setComment] = useState("");
+  const [comments, setComments] = useState([]);
 
-  const handleCommentClick = () => {
-    setShowCommentBox((prev) => !prev);
+  const fetchComments = () => {
+    fetch(`http://localhost:8080/comments/post/${post.id}`, {
+      headers: { Authorization: `Bearer ${token}` },
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        const sorted = [...data].sort(
+          (a, b) => new Date(b.postedAt) - new Date(a.postedAt)
+        );
+        setComments(sorted);
+      })
+      .catch((err) => console.error("Failed to load comments:", err));
+  };
+
+  useEffect(() => {
+    if (showCommentBox) {
+      fetchComments();
+    }
+  }, [showCommentBox]);
+
+  const handleCommentSubmit = () => {
+    if (!comment.trim()) return;
+
+    fetch("http://localhost:8080/comments", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({
+        content: comment,
+        user: { id: user.id },
+        post: { id: post.id },
+      }),
+    })
+      .then(() => {
+        setComment("");
+        fetchComments();
+      })
+      .catch((err) =>
+        console.error("Failed to post comment:", err.response || err)
+      );
+  };
+
+  const handlePostDelete = () => {
+    if (!window.confirm("Delete this post and its comments?")) return;
+
+    fetch(`http://localhost:8080/posts/${post.id}`, {
+      method: "DELETE",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then(() => onDelete(post.id))
+      .catch((err) => console.error("Failed to delete post:", err));
+  };
+
+  const handleCommentDelete = (commentId) => {
+    fetch(`http://localhost:8080/comments/${commentId}`, {
+      method: "DELETE",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then(() => fetchComments())
+      .catch((err) => console.error("Failed to delete comment:", err));
   };
 
   return (
     <div className="post-box">
-      {/* Post Header */}
       <div className="post-header">
         <div className="post-user-info">
           <img
@@ -157,35 +231,61 @@ function ProfilePost({ post, user }) {
           />
           <span className="post-username">{user.username}</span>
         </div>
-        <span className="post-time">
-          {post.timestamp
-            ? new Date(post.timestamp).toLocaleString()
-            : "Just now"}
-        </span>
+        <div className="post-header-right">
+          {user?.id === post.user?.id && (
+            <FaTrashAlt className="delete-icon" onClick={handlePostDelete} />
+          )}
+          <span className="post-time">
+            {new Date(post.createdAt).toLocaleString()}
+          </span>
+        </div>
       </div>
 
-      {/* Post Content */}
       <p className="post-content">{post.content}</p>
 
-      {/* Post Footer with Comment Icon */}
+      {post.imageUrl && (
+        <div className="post-image-box">
+          <img
+            src={`http://localhost:8080${post.imageUrl}`}
+            alt="Post visual"
+            className="post-image"
+          />
+        </div>
+      )}
+
       <div className="post-footer">
         <LiaComment
           className="comment-icon"
-          onClick={handleCommentClick}
+          onClick={() => setShowCommentBox((prev) => !prev)}
         />
       </div>
 
-      {/* Comment Input Box */}
       {showCommentBox && (
-        <div className="comment-box">
-          <input
-            type="text"
-            value={comment}
-            onChange={(e) => setComment(e.target.value)}
-            placeholder="Woof! Share your thoughts here..."
-            className="comment-input"
-          />
-          <button className="comment-submit">Post</button>
+        <div className="comment-section">
+          <div className="comment-box">
+            <input
+              type="text"
+              value={comment}
+              onChange={(e) => setComment(e.target.value)}
+              placeholder="Woof! Share your thoughts here..."
+              className="comment-input"
+            />
+            <button className="comment-submit" onClick={handleCommentSubmit}>
+              Comment
+            </button>
+          </div>
+
+          <div className="comment-list">
+            {comments.map((c) => (
+              <div key={c.id} className="comment-item-profile">
+                <strong>{c.username || "Anonymous"}</strong>: {c.content}
+                <FaTrashAlt
+                  className="delete-icon comment-delete"
+                  onClick={() => handleCommentDelete(c.id)}
+                />
+              </div>
+            ))}
+          </div>
         </div>
       )}
     </div>
