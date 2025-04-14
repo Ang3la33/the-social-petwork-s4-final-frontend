@@ -82,8 +82,11 @@ function EditProfile() {
       <div className="edit-box">
           <div className="avatar-section">
             <AvatarUploader
-            userId={userId}
-            initialAvatarUrl={formData.avatarUrl}
+              userId={userId}
+              initialAvatarUrl={formData.avatarUrl}
+              onUploadComplete={(newAvatarUrl) =>
+                setFormData((prev) => ({ ...prev, avatarUrl: newAvatarUrl }))
+              }
             />
           </div>
 

@@ -1,28 +1,14 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { FaSearch } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import '../App.css';
 import logoImage from '../Assets/Images/greenLogo.png';
+import filler from '../Assets/Images/filler.png';
+import { useUser } from "../Context/UserContext";
 
 function Navbar() {
-  const [currentUser, setCurrentUser] = useState({
-    username: '',
-    avatarUrl: 'https://via.placeholder.com/40'
-  });
-
+  const { user } = useUser();
   const navigate = useNavigate();
-
-  useEffect(() => {
-    const username = localStorage.getItem('username');
-    const avatar = localStorage.getItem('avatar'); // optional if you want to save avatar too
-    if (username) {
-      setCurrentUser(prev => ({
-        ...prev,
-        username,
-        avatarUrl: avatar || prev.avatarUrl
-      }));
-    }
-  }, []);
 
   const handleLogout = () => {
     localStorage.clear(); // Remove token, userId, username, etc.
@@ -32,7 +18,6 @@ function Navbar() {
   return (
     <nav className="navBar">
       <div className="navBar-Container">
-
         <div className="left-side">
           <div className="logo">
             <a href="/post">
@@ -51,7 +36,7 @@ function Navbar() {
           </div>
         </div>
 
-        <div className='right-side'>
+        <div className="right-side">
           <div className="nav-link">
             <a href="/browse-users" className="nav-link">
               Browse Users
@@ -61,12 +46,18 @@ function Navbar() {
           <div className="user-profile">
             <a href="/profile" className="profile-link">
               <img
-                src={currentUser.avatarUrl}
+                src={
+                  user.avatarUrl?.startsWith("http")
+                    ? user.avatarUrl
+                    : user.avatarUrl
+                    ? `http://localhost:8080${user.avatarUrl}`
+                    : filler
+                }
                 className="avatar-picture"
                 alt="User avatar"
               />
               <span className="name">
-                {currentUser.username ? currentUser.username : "User"}
+                {user.username || "User"}
               </span>
             </a>
             <button className="logout-button" onClick={handleLogout}>
