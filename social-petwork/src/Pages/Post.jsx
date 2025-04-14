@@ -9,25 +9,43 @@ function Post() {
   const [posts, setPosts] = useState([]);
   const [newPostContent, setNewPostContent] = useState("");
   const [imageFile, setImageFile] = useState(null);
+  const [suggestedUsers, setSuggestedUsers] = useState([]);
+  const [userPostsCount, setUserPostsCount] = useState(0);
+  const [followersCount, setFollowersCount] = useState(0);
+  const [followingCount, setFollowingCount] = useState(0);
 
   const userId = localStorage.getItem("userId");
   const token = localStorage.getItem("token");
 
-  const peopleYouMayKnow = [
-    { id: 1, name: "Loki", avatar: filler },
-    { id: 2, name: "Oreo", avatar: filler },
-    { id: 3, name: "Ralph", avatar: filler },
-  ];
-
   useEffect(() => {
     if (!userId || !token) return;
 
-    axios
-      .get(`http://localhost:8080/users/${userId}`, {
-        headers: { Authorization: `Bearer ${token}` },
-      })
+    axios.get(`http://localhost:8080/users/${userId}`, {
+      headers: { Authorization: `Bearer ${token}` },
+    })
       .then((res) => setUser(res.data))
       .catch((err) => console.error("Failed to fetch user", err));
+
+    // Fetch user's post count
+    axios.get(`http://localhost:8080/users/${userId}/posts`, {
+      headers: { Authorization: `Bearer ${token}` },
+    })
+      .then((res) => setUserPostsCount(res.data.length))
+      .catch(() => setUserPostsCount(0));
+
+    // Fetch followers
+    axios.get(`http://localhost:8080/users/${userId}/followers`, {
+      headers: { Authorization: `Bearer ${token}` },
+    })
+      .then((res) => setFollowersCount(res.data.length))
+      .catch(() => setFollowersCount(0));
+
+    // Fetch following
+    axios.get(`http://localhost:8080/users/${userId}/following`, {
+      headers: { Authorization: `Bearer ${token}` },
+    })
+      .then((res) => setFollowingCount(res.data.length))
+      .catch(() => setFollowingCount(0));
   }, [userId, token]);
 
   useEffect(() => {
@@ -43,6 +61,26 @@ function Post() {
     return () => clearInterval(interval);
   }, []);
 
+  useEffect(() => {
+    const fetchSuggestedUsers = async () => {
+      try {
+        const res = await axios.get("http://localhost:8080/users", {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+
+        const filtered = res.data.filter((u) => u.id !== parseInt(userId));
+        const shuffled = filtered.sort(() => 0.5 - Math.random());
+        setSuggestedUsers(shuffled.slice(0, 4));
+      } catch (err) {
+        console.error("Failed to load suggested users:", err);
+      }
+    };
+
+    if (userId && token) {
+      fetchSuggestedUsers();
+    }
+  }, [userId, token]);
+
   const handlePostSubmit = () => {
     if (!newPostContent.trim() || !user) return;
 
@@ -55,9 +93,7 @@ function Post() {
 
     axios
       .post("http://localhost:8080/posts", formData, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+        headers: { Authorization: `Bearer ${token}` },
       })
       .then(() => {
         setNewPostContent("");
@@ -111,15 +147,15 @@ function Post() {
               <div className="user-stats">
                 <div className="stat">
                   <span className="stat-label">Posts</span>
-                  <span className="stat-number">{user.posts || "--"}</span>
+                  <span className="stat-number">{userPostsCount}</span>
                 </div>
                 <div className="stat">
                   <span className="stat-label">Followers</span>
-                  <span className="stat-number">{user.followers || "--"}</span>
+                  <span className="stat-number">{followersCount}</span>
                 </div>
                 <div className="stat">
                   <span className="stat-label">Following</span>
-                  <span className="stat-number">{user.following || "--"}</span>
+                  <span className="stat-number">{followingCount}</span>
                 </div>
               </div>
             </div>
@@ -128,16 +164,20 @@ function Post() {
           <div className="people-you-may-know">
             <h4>Sniffing New Pals</h4>
             <div className="suggested-people">
-              {peopleYouMayKnow.map((person) => (
-                <div key={person.id} className="suggested-person">
-                  <img
-                    src={person.avatar}
-                    alt="Avatar"
-                    className="avatar-picture"
-                  />
-                  <span className="suggested-person-name">{person.name}</span>
-                </div>
-              ))}
+              {suggestedUsers.length === 0 ? (
+                <p>No other users found.</p>
+              ) : (
+                suggestedUsers.map((person) => (
+                  <div key={person.id} className="suggested-person">
+                    <img
+                      src={person.avatarUrl ? `http://localhost:8080${person.avatarUrl}` : filler}
+                      alt="Avatar"
+                      className="avatar-picture"
+                    />
+                    <span className="suggested-person-name">{person.username}</span>
+                  </div>
+                ))
+              )}
             </div>
           </div>
         </div>
@@ -154,9 +194,7 @@ function PostBox({ post, user, token }) {
   const fetchComments = useCallback(() => {
     axios
       .get(`http://localhost:8080/comments/post/${post.id}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+        headers: { Authorization: `Bearer ${token}` },
       })
       .then((res) => {
         const sorted = [...res.data].sort(
@@ -168,9 +206,7 @@ function PostBox({ post, user, token }) {
   }, [post.id, token]);
 
   useEffect(() => {
-    if (showCommentBox) {
-      fetchComments();
-    }
+    if (showCommentBox) fetchComments();
   }, [showCommentBox, fetchComments]);
 
   const handleCommentSubmit = () => {
@@ -195,9 +231,9 @@ function PostBox({ post, user, token }) {
         setComment("");
         fetchComments();
       })
-      .catch((err) => {
-        console.error("❌ Failed to post comment:", err.response?.data || err.message);
-      });
+      .catch((err) =>
+        console.error("❌ Failed to post comment:", err.response?.data || err.message)
+      );
   };
 
   return (
@@ -210,9 +246,7 @@ function PostBox({ post, user, token }) {
         />
         <div className="post-user-info">
           <span className="post-username">{post.user?.username || "Unknown"}</span>
-          <span className="post-time">
-            {new Date(post.createdAt).toLocaleString()}
-          </span>
+          <span className="post-time">{new Date(post.createdAt).toLocaleString()}</span>
         </div>
       </div>
 

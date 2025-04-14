@@ -8,156 +8,133 @@ function BrowseUsers() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  const userId = 999; 
-  const token = "fake-token"; 
-
-
-  const fetchUsers = async () => {
-    try {
-      const response = await fetch("/api/users", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
-      if (!response.ok) {
-        throw new Error("Failed to fetch users");
-      }
-
-      const data = await response.json();
-      setUsers(data);
-    } catch (err) {
-      console.error("Error fetching users:", err);
-      setError("Failed to load users. Please try again later.");
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const fetchFollowing = async () => {
-    try {
-      const response = await fetch(`/api/users/${userId}/following`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-        method: "GET",
-      });
-
-      if (!response.ok) {
-        throw new Error("Failed to fetch following");
-      }
-
-      const data = await response.json();
-      const followingSet = new Set(
-        data.map((follow) => follow.targetId || follow.followingId)
-      );
-      setFollowing(followingSet);
-    } catch (err) {
-      console.error("Error fetching following:", err);
-    }
-  };
+  const userId = parseInt(localStorage.getItem("userId"), 10);
+  const token = localStorage.getItem("token");
 
   useEffect(() => {
-    const loadData = async () => {
+    const fetchData = async () => {
       setLoading(true);
-      await Promise.all([fetchUsers(), fetchFollowing()]);
+      try {
+        // 1. Fetch all users
+        const usersResponse = await fetch("http://localhost:8080/users", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        if (!usersResponse.ok) throw new Error("Failed to fetch users");
+        const usersData = await usersResponse.json();
+        setUsers(usersData);
+
+        // 2. Fetch following relationships
+        const followingResponse = await fetch(
+          `http://localhost:8080/users/${userId}/following`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        if (!followingResponse.ok) throw new Error("Failed to fetch following");
+
+        const followingData = await followingResponse.json();
+
+        const followingIds = new Set(
+          followingData
+            .map((f) => f.followedUser?.id)
+            .filter((id) => typeof id === "number")
+        );
+
+        console.log("✅ Loaded following IDs:", Array.from(followingIds));
+        setFollowing(followingIds);
+      } catch (err) {
+        console.error("Fetch error:", err);
+        setError("Could not load users.");
+      } finally {
+        setLoading(false);
+      }
     };
 
-    loadData();
-  }, []);
+    fetchData();
+  }, [userId, token]);
 
-  const handleFollowToggle = async (otherUserId) => {
-    const isFollowing = following.has(otherUserId);
+  const handleFollowToggle = async (targetId) => {
+    const isFollowing = following.has(targetId);
+    const url = `http://localhost:8080/users/${userId}/${isFollowing ? "unfollow" : "follow"}/${targetId}`;
+    const method = isFollowing ? "DELETE" : "POST";
 
     try {
-      let response;
-
-      if (isFollowing) {
-        response = await fetch(`/api/users/${userId}/unfollow/${otherUserId}`, {
-          method: "DELETE",
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json",
-          },
-        });
-      } else {
-        response = await fetch(`/api/users/${userId}/follow/${otherUserId}`, {
-          method: "POST",
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json",
-          },
-        });
-      }
+      const response = await fetch(url, {
+        method,
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      });
 
       if (!response.ok) {
-        throw new Error(
-          `Failed to ${isFollowing ? "unfollow" : "follow"} user`
-        );
+        throw new Error("Follow/unfollow failed");
       }
-      if (isFollowing) {
-        setFollowing((prev) => {
-          const updated = new Set(prev);
-          updated.delete(otherUserId);
-          return updated;
-        });
-        console.log(`Unfollowed user ${otherUserId}`);
-      } else {
-        setFollowing((prev) => new Set(prev).add(otherUserId));
-        console.log(`Followed user ${otherUserId}`);
-      }
+
+      setFollowing((prev) => {
+        const updated = new Set(prev);
+        if (isFollowing) {
+          updated.delete(targetId);
+        } else {
+          updated.add(targetId);
+        }
+        return updated;
+      });
     } catch (err) {
-      console.error(
-        `Error ${isFollowing ? "unfollowing" : "following"} user:`,
-        err
-      );
-      alert(
-        `Failed to ${
-          isFollowing ? "unfollow" : "follow"
-        } user. Please try again.`
-      );
+      console.error("Follow toggle error:", err);
+      alert("Could not update follow status.");
     }
   };
 
-  if (loading) {
-    return <div className="loading">Loading users...</div>;
-  }
-
-  if (error) {
-    return <div className="error">{error}</div>;
-  }
+  if (loading) return <div className="loading">Loading users...</div>;
+  if (error) return <div className="error">{error}</div>;
 
   return (
     <div className="browse-users-wrapper">
       <h2>Find Your Fur-iends</h2>
       <div className="browse-users-list">
         {users
-          .filter((u) => u.id !== userId) 
-          .map((user) => (
-            <div key={user.id} className="browse-user-card">
-              <div className="browse-user-left">
-                <img
-                  src={user.avatar || filler}
-                  alt={user.username}
-                  className="browse-user-avatar"
-                />
-                <div className="browse-user-info">
-                  <h4>{user.username}</h4>
-                  <p>{user.bio || "Loves walks & treats!"}</p>
+          .filter((u) => u.id !== userId)
+          .map((user) => {
+            const isFollowing = following.has(user.id);
+            return (
+              <div key={user.id} className="browse-user-card">
+                <div className="browse-user-left">
+                  <img
+                    src={
+                      user.avatarUrl
+                        ? `http://localhost:8080${user.avatarUrl}`
+                        : filler
+                    }
+                    alt={user.username}
+                    className="browse-user-avatar"
+                  />
+                  <div className="browse-user-info">
+                    <h4>{user.username}</h4>
+                    <p>
+                      {user.about && user.about !== "empty"
+                        ? user.about
+                        : "Loves walks & treats!"}
+                    </p>
+                  </div>
+                </div>
+                <div className="browse-user-right">
+                  <button
+                    className={`follow-button ${
+                      isFollowing ? "following" : ""
+                    }`}
+                    onClick={() => handleFollowToggle(user.id)}
+                  >
+                    {isFollowing ? "Unfollow" : "Follow"}
+                  </button>
                 </div>
               </div>
-              <div className="browse-user-right">
-                <button
-                  className={`follow-button ${
-                    following.has(user.id) ? "following" : ""
-                  }`}
-                  onClick={() => handleFollowToggle(user.id)}
-                >
-                  {following.has(user.id) ? "Unfollow" : "Follow"}
-                </button>
-              </div>
-            </div>
-          ))}
+            );
+          })}
       </div>
     </div>
   );

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { FaSearch } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import '../App.css';
@@ -7,12 +7,16 @@ import filler from '../Assets/Images/filler.png';
 import { useUser } from "../Context/UserContext";
 
 function Navbar() {
-  const { user } = useUser();
+  const { user, refreshUser } = useUser();
   const navigate = useNavigate();
 
+  useEffect(() => {
+    refreshUser(); // ensures it pulls latest username & avatar
+  }, []);
+
   const handleLogout = () => {
-    localStorage.clear(); // Remove token, userId, username, etc.
-    navigate("/login");   // Redirect to login
+    localStorage.clear(); // Remove token, userId, etc.
+    navigate("/login");
   };
 
   return (
@@ -21,10 +25,7 @@ function Navbar() {
         <div className="left-side">
           <div className="logo">
             <a href="/post">
-              <img
-                src={logoImage}
-                alt="The Social Petwork Logo"
-              />
+              <img src={logoImage} alt="The Social Petwork Logo" />
             </a>
           </div>
 

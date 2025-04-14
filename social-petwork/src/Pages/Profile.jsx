@@ -4,7 +4,6 @@ import { LiaComment } from "react-icons/lia";
 import { Link, useNavigate } from "react-router-dom";
 import "../App.css";
 import filler from "../Assets/Images/filler.png";
-import AvatarUploader from "../Components/AvatarUploader";
 
 function Profile() {
   const navigate = useNavigate();
@@ -13,6 +12,8 @@ function Profile() {
 
   const [user, setUser] = useState(null);
   const [posts, setPosts] = useState([]);
+  const [followersCount, setFollowersCount] = useState(0);
+  const [followingCount, setFollowingCount] = useState(0);
 
   useEffect(() => {
     if (!userId || !token) {
@@ -21,9 +22,7 @@ function Profile() {
     }
 
     fetch(`http://localhost:8080/users/${userId}`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
+      headers: { Authorization: `Bearer ${token}` },
     })
       .then((res) => {
         if (!res.ok) throw new Error("Failed to fetch user data.");
@@ -36,28 +35,32 @@ function Profile() {
       });
 
     fetch(`http://localhost:8080/users/${userId}/posts`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
+      headers: { Authorization: `Bearer ${token}` },
     })
-      .then((res) => {
-        if (!res.ok) throw new Error("Failed to fetch posts.");
-        return res.json();
-      })
+      .then((res) => res.json())
       .then((data) => setPosts(data))
-      .catch((err) => {
-        console.error(err);
-        setPosts([]);
-      });
+      .catch(() => setPosts([]));
+
+    fetch(`http://localhost:8080/users/${userId}/followers`, {
+      headers: { Authorization: `Bearer ${token}` },
+    })
+      .then((res) => res.json())
+      .then((data) => setFollowersCount(data.length))
+      .catch(() => setFollowersCount(0));
+
+    fetch(`http://localhost:8080/users/${userId}/following`, {
+      headers: { Authorization: `Bearer ${token}` },
+    })
+      .then((res) => res.json())
+      .then((data) => setFollowingCount(data.length))
+      .catch(() => setFollowingCount(0));
   }, [userId, token, navigate]);
 
   const removePostFromList = (deletedPostId) => {
     setPosts((prev) => prev.filter((p) => p.id !== deletedPostId));
   };
 
-  if (!user) {
-    return <div className="profile-wrapper">Loading profile...</div>;
-  }
+  if (!user) return <div className="profile-wrapper">Loading profile...</div>;
 
   return (
     <div className="profile-wrapper">
@@ -65,16 +68,16 @@ function Profile() {
         <div className="profile-header">
           <div className="profile-left">
             <img
-                src={
-                  user.avatarUrl?.startsWith("http")
-                    ? user.avatarUrl
-                    : user.avatarUrl
-                    ? `http://localhost:8080${user.avatarUrl}`
-                    : filler
-                }
-                alt="Avatar"
-                className="avatar"
-              />
+              src={
+                user.avatarUrl?.startsWith("http")
+                  ? user.avatarUrl
+                  : user.avatarUrl
+                  ? `http://localhost:8080${user.avatarUrl}`
+                  : filler
+              }
+              alt="Avatar"
+              className="avatar"
+            />
             <div className="user-info">
               <h3 className="username">{user.username}</h3>
               <Link to="/edit-profile" className="edit-icon-link">
@@ -91,11 +94,11 @@ function Profile() {
               </div>
               <div className="stat">
                 <span className="caption">Followers</span>
-                <span className="number">{user.followers || "--"}</span>
+                <span className="number">{followersCount}</span>
               </div>
               <div className="stat">
                 <span className="caption">Following</span>
-                <span className="number">{user.following || "--"}</span>
+                <span className="number">{followingCount}</span>
               </div>
             </div>
           </div>
@@ -127,9 +130,7 @@ function Profile() {
         <div className="posts-section">
           <h4 className="posts-header">My Posts</h4>
           {posts.length === 0 ? (
-            <p className="post-placeholder">
-              You haven't posted anything yet.
-            </p>
+            <p className="post-placeholder">You haven't posted anything yet.</p>
           ) : (
             [...posts]
               .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
@@ -159,19 +160,14 @@ function ProfilePost({ post, user, token, onDelete }) {
       headers: { Authorization: `Bearer ${token}` },
     })
       .then((res) => res.json())
-      .then((data) => {
-        const sorted = [...data].sort(
-          (a, b) => new Date(b.postedAt) - new Date(a.postedAt)
-        );
-        setComments(sorted);
-      })
+      .then((data) =>
+        setComments(data.sort((a, b) => new Date(b.postedAt) - new Date(a.postedAt)))
+      )
       .catch((err) => console.error("Failed to load comments:", err));
   };
 
   useEffect(() => {
-    if (showCommentBox) {
-      fetchComments();
-    }
+    if (showCommentBox) fetchComments();
   }, [showCommentBox]);
 
   const handleCommentSubmit = () => {
@@ -193,9 +189,7 @@ function ProfilePost({ post, user, token, onDelete }) {
         setComment("");
         fetchComments();
       })
-      .catch((err) =>
-        console.error("Failed to post comment:", err.response || err)
-      );
+      .catch((err) => console.error("Failed to post comment:", err));
   };
 
   const handlePostDelete = () => {
@@ -203,9 +197,7 @@ function ProfilePost({ post, user, token, onDelete }) {
 
     fetch(`http://localhost:8080/posts/${post.id}`, {
       method: "DELETE",
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
+      headers: { Authorization: `Bearer ${token}` },
     })
       .then(() => onDelete(post.id))
       .catch((err) => console.error("Failed to delete post:", err));
@@ -214,9 +206,7 @@ function ProfilePost({ post, user, token, onDelete }) {
   const handleCommentDelete = (commentId) => {
     fetch(`http://localhost:8080/comments/${commentId}`, {
       method: "DELETE",
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
+      headers: { Authorization: `Bearer ${token}` },
     })
       .then(() => fetchComments())
       .catch((err) => console.error("Failed to delete comment:", err));
@@ -227,7 +217,13 @@ function ProfilePost({ post, user, token, onDelete }) {
       <div className="post-header">
         <div className="post-user-info">
           <img
-            src={user.avatarUrl ? `http://localhost:8080${user.avatarUrl}` : filler}
+            src={
+              user.avatarUrl?.startsWith("http")
+                ? user.avatarUrl
+                : user.avatarUrl
+                ? `http://localhost:8080${user.avatarUrl}`
+                : filler
+            }
             alt="Avatar"
             className="post-avatar"
           />

@@ -4,12 +4,15 @@ import { Route, BrowserRouter as Router, Routes, useLocation } from 'react-route
 import Footer from './Components/Footer';
 import Navbar from './Components/NavBar';
 
+import { UserProvider } from './Context/UserContext';
 
 import Landing from './Pages/Landing';
 import Login from './Pages/Login';
 import Post from "./Pages/Post";
 import Profile from './Pages/Profile';
 import Register from './Pages/Register';
+import BrowseUsers from './Pages/BrowseUsers';
+import EditProfile from './Pages/EditProfile';
 
 
 function Layout() {
