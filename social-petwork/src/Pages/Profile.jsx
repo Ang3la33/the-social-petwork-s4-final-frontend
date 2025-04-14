@@ -65,10 +65,16 @@ function Profile() {
         <div className="profile-header">
           <div className="profile-left">
             <img
-              src={user.avatarUrl || filler}
-              alt="Avatar"
-              className="avatar"
-            />
+                src={
+                  user.avatarUrl?.startsWith("http")
+                    ? user.avatarUrl
+                    : user.avatarUrl
+                    ? `http://localhost:8080${user.avatarUrl}`
+                    : filler
+                }
+                alt="Avatar"
+                className="avatar"
+              />
             <div className="user-info">
               <h3 className="username">{user.username}</h3>
               <Link to="/edit-profile" className="edit-icon-link">
@@ -221,7 +227,7 @@ function ProfilePost({ post, user, token, onDelete }) {
       <div className="post-header">
         <div className="post-user-info">
           <img
-            src={user.avatarUrl || filler}
+            src={user.avatarUrl ? `http://localhost:8080${user.avatarUrl}` : filler}
             alt="Avatar"
             className="post-avatar"
           />

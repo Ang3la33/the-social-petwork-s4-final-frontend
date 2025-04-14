@@ -103,7 +103,7 @@ function Post() {
           {user && (
             <div className="user-profile-box">
               <img
-                src={user.avatar || filler}
+                src={user.avatarUrl ? `http://localhost:8080${user.avatarUrl}` : filler}
                 alt="Avatar"
                 className="user-avatar"
               />
@@ -132,8 +132,8 @@ function Post() {
                 <div key={person.id} className="suggested-person">
                   <img
                     src={person.avatar}
-                    alt="Person Avatar"
-                    className="suggested-person-avatar"
+                    alt="Avatar"
+                    className="avatar-picture"
                   />
                   <span className="suggested-person-name">{person.name}</span>
                 </div>
@@ -175,20 +175,22 @@ function PostBox({ post, user, token }) {
 
   const handleCommentSubmit = () => {
     if (!comment.trim() || !user) return;
-  
-    console.log("📤 Submitting comment:", comment);
-  
+
     axios
-      .post("http://localhost:8080/comments", {
-        content: comment,
-        user: { id: user.id },
-        post: { id: post.id },
-      }, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
+      .post(
+        "http://localhost:8080/comments",
+        {
+          content: comment,
+          user: { id: user.id },
+          post: { id: post.id },
         },
-      })
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      )
       .then(() => {
         setComment("");
         fetchComments();
@@ -196,14 +198,13 @@ function PostBox({ post, user, token }) {
       .catch((err) => {
         console.error("❌ Failed to post comment:", err.response?.data || err.message);
       });
-  };  
+  };
 
   return (
     <div className="post-box">
       <div className="post-header">
-        <img src={post.avatarUrl} alt="Avatar" className="post-avatar" />
         <img
-          src={post.user?.avatar || filler}
+          src={post.user?.avatarUrl ? `http://localhost:8080${post.user.avatarUrl}` : filler}
           alt="Avatar"
           className="post-avatar"
         />
