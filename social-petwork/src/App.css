@@ -438,6 +438,25 @@ body, html, #root {
     justify-content: center;
     margin: 10px 0;
   }
+
+  /* Stack sidebars above posts feed on smaller screens */
+.post-page-box {
+  flex-direction: column;
+}
+
+.right-sidebar {
+  width: 100%;
+  flex-direction: row;
+  justify-content: space-around;
+  position: static;
+  top: unset;
+}
+
+.user-profile-box,
+.people-you-may-know {
+  width: 45%;
+}
+
 }
 
 
