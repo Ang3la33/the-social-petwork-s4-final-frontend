@@ -16,6 +16,7 @@ import EditProfile from './Pages/EditProfile';
 
 import About from './Pages/About';
 import Contact from './Pages/Contact';
+import Privacy from './Pages/Privacy';
 
 
 function Layout() {
