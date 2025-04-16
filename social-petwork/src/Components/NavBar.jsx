@@ -28,13 +28,7 @@ function Navbar() {
               <img src={logoImage} alt="The Social Petwork Logo" />
             </a>
           </div>
-
-          <div className="search-bar">
-            <input type="search" placeholder="Search" />
-            <button type="button">
-              <FaSearch />
-            </button>
-          </div>
+          
         </div>
 
         <div className="right-side">
