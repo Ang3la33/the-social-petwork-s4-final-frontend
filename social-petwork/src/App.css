@@ -1114,10 +1114,18 @@ h4{
   background-color: #e98b30;
  }
   
-  
+ p {
+  color: #08361d; 
+  letter-spacing: 1px;
+  text-align: center;
+  margin-left: 180px;
+  margin-right: 180px;
+  font-size: 18px;
+  margin-bottom: 20px;
+ }
   
  h2 {
-   color: #000000; 
+   color: #08361d; 
    font-size: 26px; 
    font-weight: 600; 
    text-align: center; 
