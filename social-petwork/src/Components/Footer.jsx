@@ -2,6 +2,7 @@ import React from "react";
 import { FaInstagram, FaLinkedin } from "react-icons/fa";
 import '../App.css';
 import Logo from "../Assets/Images/greenLogo.png";
+import { Link } from "react-router-dom";
 
 const Footer = () => {
   return (
@@ -12,9 +13,10 @@ const Footer = () => {
         <div className="footer-top">
           
           <div className="footer-links">
-            <a href="/">Home</a>
-            <a href="/about">About Us</a>
-            <a href="/contact">Contact Us</a>
+          <Link to="/about">About Us</Link>
+          <Link to="/contact">Contact Us</Link>
+          <Link to="/privacy">Privacy</Link>
+          <Link to="/terms">Terms and Conditions</Link>
           </div>
 
           <img src={Logo} alt="Logo" className="footer-logo" />
