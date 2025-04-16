@@ -15,15 +15,13 @@ const Footer = () => {
           <div className="footer-links">
           <Link to="/about">About Us</Link>
           <Link to="/contact">Contact Us</Link>
-          <Link to="/privacy">Privacy</Link>
-          <Link to="/terms">Terms and Conditions</Link>
           </div>
 
           <img src={Logo} alt="Logo" className="footer-logo" />
 
           <div className="footer-links">
-            <a href="/privacy">Privacy</a>
-            <a href="/terms">Terms and Conditions</a>
+          <Link to="/privacy">Privacy</Link>
+          <Link to="/terms">Terms and Conditions</Link>
           </div>
         </div>
 
