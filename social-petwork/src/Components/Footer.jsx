@@ -41,7 +41,7 @@ const Footer = () => {
             &copy; {new Date().getFullYear()} Copyright. All Rights Reserved
           </div>
           <div className="footer-text">
-            Made with <span className="footer-heart">&#10084;&#65039;</span> For you PetLovers
+            Made with <span className="footer-heart">&#10084;&#65039;</span> For All You Pet Lovers
           </div>
         </div>
 
