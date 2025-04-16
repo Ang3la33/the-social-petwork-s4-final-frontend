@@ -95,7 +95,7 @@ function BrowseUsers() {
 
   return (
     <div className="browse-users-wrapper">
-      <h2>Find Your Fur-iends</h2>
+      <h2>Find Your Furiends</h2>
       <div className="browse-users-list">
         {users
           .filter((u) => u.id !== userId)
