@@ -15,6 +15,7 @@ import BrowseUsers from './Pages/BrowseUsers';
 import EditProfile from './Pages/EditProfile';
 
 import About from './Pages/About';
+import Contact from './Pages/Contact';
 
 
 function Layout() {
