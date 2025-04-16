@@ -14,6 +14,8 @@ import Register from './Pages/Register';
 import BrowseUsers from './Pages/BrowseUsers';
 import EditProfile from './Pages/EditProfile';
 
+import About from './Pages/About';
+
 
 function Layout() {
   const location = useLocation();
