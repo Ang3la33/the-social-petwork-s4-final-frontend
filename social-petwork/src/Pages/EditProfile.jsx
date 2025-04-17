@@ -4,6 +4,8 @@ import "../App.css";
 import filler from "../Assets/Images/filler.png";
 import AvatarUploader from "../Components/AvatarUploader";
 
+const API_BASE = "http://15.222.242.215:8080";
+
 function EditProfile() {
   const userId = localStorage.getItem("userId");
   const token = localStorage.getItem("token");
@@ -15,7 +17,8 @@ function EditProfile() {
     username: "",
     password: "",
     birthday: "",
-    about: ""
+    about: "",
+    avatarUrl: ""
   });
 
   const [message, setMessage] = useState("");
@@ -26,7 +29,7 @@ function EditProfile() {
       return;
     }
 
-    fetch(`http://15.222.242.215:8080/users/${userId}`, {
+    fetch(`${API_BASE}/users/${userId}`, {
       headers: { Authorization: `Bearer ${token}` }
     })
       .then((res) => res.json())
@@ -57,7 +60,7 @@ function EditProfile() {
       delete updatedData.password;
     }
 
-    fetch(`http://15.222.242.215/users/${userId}`, {
+    fetch(`${API_BASE}/users/${userId}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -80,15 +83,15 @@ function EditProfile() {
   return (
     <div className="edit-wrapper">
       <div className="edit-box">
-          <div className="avatar-section">
-            <AvatarUploader
-              userId={userId}
-              initialAvatarUrl={formData.avatarUrl}
-              onUploadComplete={(newAvatarUrl) =>
-                setFormData((prev) => ({ ...prev, avatarUrl: newAvatarUrl }))
-              }
-            />
-          </div>
+        <div className="avatar-section">
+          <AvatarUploader
+            userId={userId}
+            initialAvatarUrl={formData.avatarUrl}
+            onUploadComplete={(newAvatarUrl) =>
+              setFormData((prev) => ({ ...prev, avatarUrl: newAvatarUrl }))
+            }
+          />
+        </div>
 
         <form onSubmit={handleSubmit} className="edit-form">
           <label>Edit Name</label>
