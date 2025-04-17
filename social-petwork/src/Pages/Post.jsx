@@ -20,28 +20,28 @@ function Post() {
   useEffect(() => {
     if (!userId || !token) return;
 
-    axios.get(`http://localhost:8080/users/${userId}`, {
+    axios.get(`http://15.222.242.215:8000/users/${userId}`, {
       headers: { Authorization: `Bearer ${token}` },
     })
       .then((res) => setUser(res.data))
       .catch((err) => console.error("Failed to fetch user", err));
 
     // Fetch user's post count
-    axios.get(`http://localhost:8080/users/${userId}/posts`, {
+    axios.get(`http://15.222.242.215:8080/users/${userId}/posts`, {
       headers: { Authorization: `Bearer ${token}` },
     })
       .then((res) => setUserPostsCount(res.data.length))
       .catch(() => setUserPostsCount(0));
 
     // Fetch followers
-    axios.get(`http://localhost:8080/users/${userId}/followers`, {
+    axios.get(`http://15.222.242.215:8080/users/${userId}/followers`, {
       headers: { Authorization: `Bearer ${token}` },
     })
       .then((res) => setFollowersCount(res.data.length))
       .catch(() => setFollowersCount(0));
 
     // Fetch following
-    axios.get(`http://localhost:8080/users/${userId}/following`, {
+    axios.get(`http://15.222.242.215:8080/users/${userId}/following`, {
       headers: { Authorization: `Bearer ${token}` },
     })
       .then((res) => setFollowingCount(res.data.length))
@@ -51,7 +51,7 @@ function Post() {
   useEffect(() => {
     const fetchPosts = () => {
       axios
-        .get("http://localhost:8080/posts")
+        .get("http://15.222.242.215:8080/posts")
         .then((res) => setPosts(res.data))
         .catch((err) => console.error("Failed to fetch posts:", err));
     };
@@ -64,7 +64,7 @@ function Post() {
   useEffect(() => {
     const fetchSuggestedUsers = async () => {
       try {
-        const res = await axios.get("http://localhost:8080/users", {
+        const res = await axios.get("http://15.222.242.215:8080/users", {
           headers: { Authorization: `Bearer ${token}` },
         });
 
@@ -92,13 +92,13 @@ function Post() {
     }
 
     axios
-      .post("http://localhost:8080/posts", formData, {
+      .post("http://15.222.242.215:8080/posts", formData, {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then(() => {
         setNewPostContent("");
         setImageFile(null);
-        return axios.get("http://localhost:8080/posts");
+        return axios.get("http://15.222.242.215:8080/posts");
       })
       .then((res) => setPosts(res.data))
       .catch((err) =>
@@ -139,7 +139,7 @@ function Post() {
           {user && (
             <div className="user-profile-box">
               <img
-                src={user.avatarUrl ? `http://localhost:8080${user.avatarUrl}` : filler}
+                src={user.avatarUrl ? `http://15.222.242.215:8080${user.avatarUrl}` : filler}
                 alt="Avatar"
                 className="user-avatar"
               />
@@ -170,7 +170,7 @@ function Post() {
                 suggestedUsers.map((person) => (
                   <div key={person.id} className="suggested-person">
                     <img
-                      src={person.avatarUrl ? `http://localhost:8080${person.avatarUrl}` : filler}
+                      src={person.avatarUrl ? `http://15.222.242.215:8080${person.avatarUrl}` : filler}
                       alt="Avatar"
                       className="avatar-picture"
                     />
@@ -193,7 +193,7 @@ function PostBox({ post, user, token }) {
 
   const fetchComments = useCallback(() => {
     axios
-      .get(`http://localhost:8080/comments/post/${post.id}`, {
+      .get(`http://15.222.242.215:8080/comments/post/${post.id}`, {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((res) => {
@@ -214,7 +214,7 @@ function PostBox({ post, user, token }) {
 
     axios
       .post(
-        "http://localhost:8080/comments",
+        "http://15.222.242.215:8080/comments",
         {
           content: comment,
           user: { id: user.id },
@@ -240,7 +240,7 @@ function PostBox({ post, user, token }) {
     <div className="post-box">
       <div className="post-header">
         <img
-          src={post.user?.avatarUrl ? `http://localhost:8080${post.user.avatarUrl}` : filler}
+          src={post.user?.avatarUrl ? `http://15.222.242.215:8080${post.user.avatarUrl}` : filler}
           alt="Avatar"
           className="post-avatar"
         />
@@ -255,7 +255,7 @@ function PostBox({ post, user, token }) {
       {post.imageUrl && (
         <div className="post-image-box">
           <img
-            src={`http://localhost:8080${post.imageUrl}`}
+            src={`http://15.222.242.215:8080${post.imageUrl}`}
             alt="Post visual"
             className="post-image"
           />

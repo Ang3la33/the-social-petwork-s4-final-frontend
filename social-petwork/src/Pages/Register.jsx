@@ -41,7 +41,7 @@ function Register() {
     };
 
     try {
-      const response = await fetch("http://99.79.59.205:8080/users/register", {
+      const response = await fetch("http://15.222.242.215:8080/users/register", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(newUser)

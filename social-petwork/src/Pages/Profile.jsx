@@ -21,7 +21,7 @@ function Profile() {
       return;
     }
 
-    fetch(`http://99.79.59.205:8080/users/${userId}`, {
+    fetch(`http://15.222.242.215:8080/users/${userId}`, {
       headers: { Authorization: `Bearer ${token}` },
     })
       .then((res) => {
@@ -34,21 +34,21 @@ function Profile() {
         navigate("/login");
       });
 
-    fetch(`http://99.79.59.205:8080/users/${userId}/posts`, {
+    fetch(`http://15.222.242.215:8080/users/${userId}/posts`, {
       headers: { Authorization: `Bearer ${token}` },
     })
       .then((res) => res.json())
       .then((data) => setPosts(data))
       .catch(() => setPosts([]));
 
-    fetch(`http://99.79.59.205:8080/users/${userId}/followers`, {
+    fetch(`http://15.222.242.215:8080/users/${userId}/followers`, {
       headers: { Authorization: `Bearer ${token}` },
     })
       .then((res) => res.json())
       .then((data) => setFollowersCount(data.length))
       .catch(() => setFollowersCount(0));
 
-    fetch(`http://99.79.59.205:8080/users/${userId}/following`, {
+    fetch(`http://15.222.242.215:8080/users/${userId}/following`, {
       headers: { Authorization: `Bearer ${token}` },
     })
       .then((res) => res.json())
@@ -72,7 +72,7 @@ function Profile() {
                 user.avatarUrl?.startsWith("http")
                   ? user.avatarUrl
                   : user.avatarUrl
-                  ? `http://99.79.59.205:8080${user.avatarUrl}`
+                  ? `http://15.222.242.215:8080${user.avatarUrl}`
                   : filler
               }
               alt="Avatar"
@@ -156,7 +156,7 @@ function ProfilePost({ post, user, token, onDelete }) {
   const [comments, setComments] = useState([]);
 
   const fetchComments = () => {
-    fetch(`http://99.79.59.205:8080/comments/post/${post.id}`, {
+    fetch(`http://15.222.242.215:8080/comments/post/${post.id}`, {
       headers: { Authorization: `Bearer ${token}` },
     })
       .then((res) => res.json())
@@ -173,7 +173,7 @@ function ProfilePost({ post, user, token, onDelete }) {
   const handleCommentSubmit = () => {
     if (!comment.trim()) return;
 
-    fetch("http://99.79.59.205:8080/comments", {
+    fetch("http://15.222.242.215:8080/comments", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -195,7 +195,7 @@ function ProfilePost({ post, user, token, onDelete }) {
   const handlePostDelete = () => {
     if (!window.confirm("Delete this post and its comments?")) return;
 
-    fetch(`http://99.79.59.205:8080/posts/${post.id}`, {
+    fetch(`http://15.222.242.215:8080/posts/${post.id}`, {
       method: "DELETE",
       headers: { Authorization: `Bearer ${token}` },
     })
@@ -204,7 +204,7 @@ function ProfilePost({ post, user, token, onDelete }) {
   };
 
   const handleCommentDelete = (commentId) => {
-    fetch(`http://99.79.59.205:8080/comments/${commentId}`, {
+    fetch(`http://15.222.242.215:8080/comments/${commentId}`, {
       method: "DELETE",
       headers: { Authorization: `Bearer ${token}` },
     })
@@ -221,7 +221,7 @@ function ProfilePost({ post, user, token, onDelete }) {
               user.avatarUrl?.startsWith("http")
                 ? user.avatarUrl
                 : user.avatarUrl
-                ? `http://99.79.59.205:8080${user.avatarUrl}`
+                ? `http://15.222.242.215:8080${user.avatarUrl}`
                 : filler
             }
             alt="Avatar"
@@ -244,7 +244,7 @@ function ProfilePost({ post, user, token, onDelete }) {
       {post.imageUrl && (
         <div className="post-image-box">
           <img
-            src={`http://99.79.59.205:8080${post.imageUrl}`}
+            src={`http://15.222.242.215:8080${post.imageUrl}`}
             alt="Post visual"
             className="post-image"
           />

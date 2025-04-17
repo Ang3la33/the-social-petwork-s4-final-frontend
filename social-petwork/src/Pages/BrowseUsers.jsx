@@ -16,7 +16,7 @@ function BrowseUsers() {
       setLoading(true);
       try {
         // 1. Fetch all users
-        const usersResponse = await fetch("http://99.79.59.205:8080/users", {
+        const usersResponse = await fetch("http://15.222.242.215:8080/users", {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -27,7 +27,7 @@ function BrowseUsers() {
 
         // 2. Fetch following relationships
         const followingResponse = await fetch(
-          `http://99.79.59.205:8080/users/${userId}/following`,
+          `http://15.222.242.215:8080/users/${userId}/following`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -59,7 +59,7 @@ function BrowseUsers() {
 
   const handleFollowToggle = async (targetId) => {
     const isFollowing = following.has(targetId);
-    const url = `http://99.79.59.205:8080/users/${userId}/${isFollowing ? "unfollow" : "follow"}/${targetId}`;
+    const url = `http://15.222.242.215:8080/users/${userId}/${isFollowing ? "unfollow" : "follow"}/${targetId}`;
     const method = isFollowing ? "DELETE" : "POST";
 
     try {
@@ -107,7 +107,7 @@ function BrowseUsers() {
                   <img
                     src={
                       user.avatarUrl
-                        ? `http://99.79.59.205:8080${user.avatarUrl}`
+                        ? `http://15.222.242.215:8080${user.avatarUrl}`
                         : filler
                     }
                     alt={user.username}
