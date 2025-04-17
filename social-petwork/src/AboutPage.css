@@ -1,0 +1,81 @@
+.about-page {
+    padding: 2rem;
+    background-color: #ffffff;
+    color: #2c2c2c;
+  }
+  
+  .page-content {
+    max-width: 900px;
+    margin: 0 auto 2rem auto;
+    text-align: center;
+  }
+  
+  .page-content h2 {
+    font-size: 2rem;
+    color: #264c46;
+    margin-bottom: 0.5rem;
+  }
+  
+  .page-content p {
+    font-size: 1.1rem;
+    color: #4a4a4a;
+    margin-bottom: 2rem;
+  }
+  
+  .team-section {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 2rem;
+    justify-content: center;
+    align-items: stretch;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  
+  .member-card {
+    background-color: #eaf4f1;
+    border-radius: 12px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    padding: 1rem;
+    text-align: center;
+    transition: transform 0.2s ease-in-out;
+  }
+  
+  .member-card:hover {
+    transform: scale(1.02);
+  }
+  
+  .member-photo {
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+    object-position: center;
+    border-radius: 50%;
+    border: 3px solid #ec9244;
+    margin-bottom: 1rem;
+  }
+  
+  .member-name {
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: #264c46;
+    margin-bottom: 0.25rem;
+  }
+  
+  .member-bio {
+    font-size: 1rem;
+    color: #333;
+    margin-bottom: 1rem;
+  }
+  
+  .member-links a {
+    margin: 0 0.5rem;
+    text-decoration: none;
+    color: #ec9244;
+    font-weight: 500;
+  }
+  
+  .member-links a:hover {
+    text-decoration: underline;
+  }
+  
