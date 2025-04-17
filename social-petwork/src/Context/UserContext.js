@@ -42,7 +42,7 @@ export function UserProvider({ children }) {
     if (!userId || !token) return;
 
     try {
-      const res = await axios.get(`http://localhost:8080/users/${userId}`, {
+      const res = await axios.get(`http://99.79.59.205:8080/users/${userId}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       const userData = res.data;
