@@ -10,13 +10,11 @@ const AvatarUploader = ({ userId, initialAvatarUrl, onUploadComplete }) => {
   const [avatarUrl, setAvatarUrl] = useState(initialAvatarUrl);
   const defaultAvatar = filler;
 
-  // Update preview when file is selected
   useEffect(() => {
     if (selectedFile) {
       const objectUrl = URL.createObjectURL(selectedFile);
       setPreview(objectUrl);
-
-      return () => URL.revokeObjectURL(objectUrl); // Clean up
+      return () => URL.revokeObjectURL(objectUrl);
     }
   }, [selectedFile]);
 
@@ -33,20 +31,20 @@ const AvatarUploader = ({ userId, initialAvatarUrl, onUploadComplete }) => {
     try {
       const res = await axios.post(
         `http://15.222.242.215:8080/users/${userId}/upload-avatar`,
-        formData
+        formData,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`
+          }
+        }
       );
 
       const newAvatarUrl = res.data.avatarUrl;
 
-      // ✅ Update in context + localStorage
       updateUser({ avatarUrl: newAvatarUrl });
-
-      // ✅ Update local preview too
       setAvatarUrl(newAvatarUrl);
       setSelectedFile(null);
       setPreview(null);
-
-      // ✅ Trigger optional callback
       onUploadComplete && onUploadComplete(newAvatarUrl);
 
     } catch (err) {
