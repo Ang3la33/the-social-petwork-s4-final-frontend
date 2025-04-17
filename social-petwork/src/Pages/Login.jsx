@@ -25,7 +25,7 @@ function Login() {
     setError("");
 
     try {
-      const response = await fetch("http://localhost:8080/users/login", {
+      const response = await fetch("http://99.79.59.205:8080/users/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(credentials)
