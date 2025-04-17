@@ -32,7 +32,7 @@ const AvatarUploader = ({ userId, initialAvatarUrl, onUploadComplete }) => {
 
     try {
       const res = await axios.post(
-        `http://localhost:8080/users/${userId}/upload-avatar`,
+        `http://99.79.59.205:8080/users/${userId}/upload-avatar`,
         formData
       );
 
@@ -63,7 +63,7 @@ const AvatarUploader = ({ userId, initialAvatarUrl, onUploadComplete }) => {
             : avatarUrl?.startsWith("http")
             ? avatarUrl
             : avatarUrl
-            ? `http://localhost:8080${avatarUrl}`
+            ? `http://99.79.59.205:8080${avatarUrl}`
             : defaultAvatar
         }
         alt="avatar"

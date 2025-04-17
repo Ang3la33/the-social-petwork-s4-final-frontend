@@ -45,7 +45,7 @@ function Navbar() {
                   user.avatarUrl?.startsWith("http")
                     ? user.avatarUrl
                     : user.avatarUrl
-                    ? `http://localhost:8080${user.avatarUrl}`
+                    ? `http://99.79.59.205:8080${user.avatarUrl}`
                     : filler
                 }
                 className="avatar-picture"

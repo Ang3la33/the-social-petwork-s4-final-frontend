@@ -26,7 +26,7 @@ function EditProfile() {
       return;
     }
 
-    fetch(`http://localhost:8080/users/${userId}`, {
+    fetch(`http://99.79.59.205:8080/users/${userId}`, {
       headers: { Authorization: `Bearer ${token}` }
     })
       .then((res) => res.json())
@@ -57,7 +57,7 @@ function EditProfile() {
       delete updatedData.password;
     }
 
-    fetch(`http://localhost:8080/users/${userId}`, {
+    fetch(`http://99.79.59.205:8080/users/${userId}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
