@@ -204,6 +204,28 @@ function PostBox({ post, user, token }) {
       .catch((err) => console.error("Failed to fetch comments:", err));
   }, [post.id, token]);
 
+  const handleDeletePost = async () => {
+    try {
+      const res = await fetch(`${API_BASE}/posts/${post.id}`, {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+  
+      if (res.ok) {
+        window.location.reload(); // simple refresh for now
+      } else {
+        const msg = await res.text();
+        alert("Failed to delete post: " + msg);
+      }
+    } catch (err) {
+      console.error("Error deleting post", err);
+      alert("Something went wrong.");
+    }
+  };
+  
+
   useEffect(() => {
     if (showCommentBox) fetchComments();
   }, [showCommentBox, fetchComments]);
@@ -266,6 +288,13 @@ function PostBox({ post, user, token }) {
           className="comment-icon"
           onClick={() => setShowCommentBox((prev) => !prev)}
         />
+        <button
+          onClick={handleDeletePost}
+          className="delete-post-button"
+        >
+          🗑️ Delete
+        </button>
+
       </div>
 
       {showCommentBox && (
