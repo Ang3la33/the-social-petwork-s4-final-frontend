@@ -2,9 +2,10 @@ import React, { useState, useEffect } from "react";
 import axios from 'axios';
 import filler from "../Assets/Images/filler.png";
 import { useUser } from "../Context/UserContext";
+import { BASE_URL } from "../config";
 
 const AvatarUploader = ({ userId, initialAvatarUrl, onUploadComplete }) => {
-  const { updateUser } = useUser(); // Global context updater
+  const { updateUser } = useUser();
   const [selectedFile, setSelectedFile] = useState(null);
   const [preview, setPreview] = useState(null);
   const [avatarUrl, setAvatarUrl] = useState(initialAvatarUrl);
@@ -30,7 +31,7 @@ const AvatarUploader = ({ userId, initialAvatarUrl, onUploadComplete }) => {
 
     try {
       const res = await axios.post(
-        `http://15.222.242.215:8080/users/${userId}/upload-avatar`,
+        `${BASE_URL}/users/${userId}/upload-avatar`,
         formData,
         {
           headers: {
@@ -40,13 +41,11 @@ const AvatarUploader = ({ userId, initialAvatarUrl, onUploadComplete }) => {
       );
 
       const newAvatarUrl = res.data.avatarUrl;
-
       updateUser({ avatarUrl: newAvatarUrl });
       setAvatarUrl(newAvatarUrl);
       setSelectedFile(null);
       setPreview(null);
       onUploadComplete && onUploadComplete(newAvatarUrl);
-
     } catch (err) {
       console.error('Upload failed:', err);
     }
@@ -61,7 +60,7 @@ const AvatarUploader = ({ userId, initialAvatarUrl, onUploadComplete }) => {
             : avatarUrl?.startsWith("http")
             ? avatarUrl
             : avatarUrl
-            ? `http://15.222.242.215:8080${avatarUrl}`
+            ? `${BASE_URL}${avatarUrl}`
             : defaultAvatar
         }
         alt="avatar"
