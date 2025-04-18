@@ -1,64 +1,35 @@
-// src/Context/UserContext.js
-import React, { createContext, useContext, useState, useEffect } from "react";
+import React, { createContext, useState, useEffect } from "react";
 import axios from "axios";
+import { BASE_URL } from "../config";
 
-const UserContext = createContext();
+export const UserContext = createContext();
 
-export function useUser() {
-  return useContext(UserContext);
-}
+export const UserProvider = ({ children }) => {
+  const [user, setUser] = useState(null);
+  const [avatarUrl, setAvatarUrl] = useState("");
 
-export function UserProvider({ children }) {
-  const [user, setUser] = useState({
-    username: '',
-    avatarUrl: ''
-  });
-
-  // Load from localStorage once at start
   useEffect(() => {
-    const storedUsername = localStorage.getItem("username");
-    const storedAvatar = localStorage.getItem("avatar");
-
-    if (storedUsername) {
-      setUser({
-        username: storedUsername,
-        avatarUrl: storedAvatar || ""
-      });
+    const token = localStorage.getItem("token");
+    if (token) {
+      axios
+        .get(`${BASE_URL}/users/me`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        })
+        .then((response) => {
+          setUser(response.data);
+          setAvatarUrl(response.data.avatarUrl);
+        })
+        .catch((error) => {
+          console.error("Error fetching user:", error);
+        });
     }
   }, []);
 
-  const updateUser = (newData) => {
-    const updatedUser = { ...user, ...newData };
-    setUser(updatedUser);
-
-    if (newData.username) localStorage.setItem("username", newData.username);
-    if (newData.avatarUrl) localStorage.setItem("avatar", newData.avatarUrl);
-  };
-
-  const refreshUser = async () => {
-    const userId = localStorage.getItem("userId");
-    const token = localStorage.getItem("token");
-
-    if (!userId || !token) return;
-
-    try {
-      const res = await axios.get(`http://15.222.242.215:8080/users/${userId}`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      const userData = res.data;
-
-      updateUser({
-        username: userData.username,
-        avatarUrl: userData.avatarUrl || "",
-      });
-    } catch (err) {
-      console.error("Failed to refresh user in context", err);
-    }
-  };
-
   return (
-    <UserContext.Provider value={{ user, updateUser, refreshUser }}>
+    <UserContext.Provider value={{ user, setUser, avatarUrl, setAvatarUrl }}>
       {children}
     </UserContext.Provider>
   );
-}
+};
