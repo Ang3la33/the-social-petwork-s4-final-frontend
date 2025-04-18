@@ -5,17 +5,18 @@ import '../App.css';
 import logoImage from '../Assets/Images/greenLogo.png';
 import filler from '../Assets/Images/filler.png';
 import { useUser } from "../Context/UserContext";
+import { BASE_URL } from "../config";
 
 function Navbar() {
   const { user, refreshUser } = useUser();
   const navigate = useNavigate();
 
   useEffect(() => {
-    refreshUser(); // ensures it pulls latest username & avatar
+    refreshUser();
   }, []);
 
   const handleLogout = () => {
-    localStorage.clear(); // Remove token, userId, etc.
+    localStorage.clear();
     navigate("/login");
   };
 
@@ -28,7 +29,6 @@ function Navbar() {
               <img src={logoImage} alt="The Social Petwork Logo" />
             </a>
           </div>
-          
         </div>
 
         <div className="right-side">
@@ -45,7 +45,7 @@ function Navbar() {
                   user.avatarUrl?.startsWith("http")
                     ? user.avatarUrl
                     : user.avatarUrl
-                    ? `http://15.222.242.215:8080${user.avatarUrl}`
+                    ? `${BASE_URL}${user.avatarUrl}`
                     : filler
                 }
                 className="avatar-picture"
