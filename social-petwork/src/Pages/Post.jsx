@@ -283,19 +283,24 @@ function PostBox({ post, user, token }) {
         </div>
       )}
 
-      <div className="post-footer">
-        <LiaComment
-          className="comment-icon"
-          onClick={() => setShowCommentBox((prev) => !prev)}
-        />
-        <button
-          onClick={handleDeletePost}
-          className="delete-post-button"
-        >
-          🗑️ Delete
-        </button>
+<div className="post-footer">
+  <button
+    className="comment-button"
+    onClick={() => setShowCommentBox((prev) => !prev)}
+  >
+    <LiaComment className="comment-icon" />
+    Comment
+  </button>
 
-      </div>
+  <button
+    onClick={handleDeletePost}
+    className="delete-post-button"
+  >
+    🗑️ Delete
+  </button>
+</div>
+
+    
 
       {showCommentBox && (
         <div className="comment-section">

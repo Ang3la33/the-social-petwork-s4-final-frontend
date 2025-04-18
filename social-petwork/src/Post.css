@@ -28,11 +28,27 @@
   padding-right: 10px;
 }
 
-/* Optional icon spacing */
-.comment-icon {
-  font-size: 1.3rem;
-  color: #f59a44;
-  margin-right: auto;
-  margin-left: 5px;
+.comment-button {
+  background-color: transparent;
+  border: none;
+  color: #444;
+  font-size: 0.95rem;
   cursor: pointer;
+  display: flex;
+  align-items: center;
+  padding: 4px 8px;
+  border-radius: 4px;
+  transition: background-color 0.2s ease, color 0.2s ease;
 }
+
+.comment-button:hover {
+  background-color: #ffe5ca;
+  color: #f9920c;
+  font-weight: bold;
+}
+
+.comment-icon {
+  font-size: 1.2rem;
+  margin-right: 5px;
+}
+
