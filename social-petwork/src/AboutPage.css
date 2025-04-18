@@ -1,81 +1,120 @@
-.about-page {
-    padding: 2rem;
-    background-color: #ffffff;
-    color: #2c2c2c;
+.about-container {
+  padding: 2rem;
+  background-color: #ffffff;
+  color: #2c2c2c;
+}
+
+.page-content {
+  max-width: 900px;
+  margin: 0 auto 2rem auto;
+  text-align: center;
+}
+
+.page-content h2 {
+  font-size: 2rem;
+  color: #264c46;
+  margin-bottom: 0.5rem;
+}
+
+.page-content p {
+  font-size: 1.1rem;
+  color: #4a4a4a;
+  margin-bottom: 2rem;
+}
+
+.team-section {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 2rem;
+  justify-content: center;
+  align-items: stretch;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.team-member {
+  background-color: #fdfdfd;
+  border: 2px solid #E8B36D;
+  border-radius: 12px;
+  padding: 1rem;
+  text-align: center;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+.team-member:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.15);
+  border-color: #FF9A47;
+  outline: 3px solid #ff9a4744;
+  outline-offset: 4px;
+}
+
+.team-img {
+  width: 150px;
+  height: 150px;
+  object-fit: cover;
+  object-position: center;
+  border-radius: 50%;
+  border: 3px solid #FF9A47;
+  margin-bottom: 1rem;
+}
+
+.links a {
+  display: inline-block;
+  margin: 0 0.5rem;
+  color: #264c46;
+  font-weight: 500;
+  text-decoration: none;
+}
+
+.links a:hover {
+  text-decoration: underline;
+  color: #FF9A47;
+}
+
+.pet-carousel {
+  margin-top: 4rem;
+  text-align: center;
+  overflow: hidden;
+}
+
+.pet-carousel h2 {
+  color: #264c46;
+  margin-bottom: 1.5rem;
+}
+
+.carousel-loop {
+  width: 100%;
+  overflow: hidden;
+  position: relative;
+}
+
+.carousel-content {
+  display: flex;
+  animation: scrollLoop 25s linear infinite;
+  gap: 2rem;
+}
+
+.carousel-content img {
+  width: 200px;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 12px;
+  border: 3px solid #FF9A47;
+  flex-shrink: 0;
+  transition: transform 0.3s ease;
+}
+
+.carousel-content img:hover {
+  transform: scale(1.05);
+}
+
+@keyframes scrollLoop {
+  0% {
+    transform: translateX(0);
   }
-  
-  .page-content {
-    max-width: 900px;
-    margin: 0 auto 2rem auto;
-    text-align: center;
+  100% {
+    transform: translateX(-50%);
   }
-  
-  .page-content h2 {
-    font-size: 2rem;
-    color: #264c46;
-    margin-bottom: 0.5rem;
-  }
-  
-  .page-content p {
-    font-size: 1.1rem;
-    color: #4a4a4a;
-    margin-bottom: 2rem;
-  }
-  
-  .team-section {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-    gap: 2rem;
-    justify-content: center;
-    align-items: stretch;
-    max-width: 1200px;
-    margin: 0 auto;
-  }
-  
-  .member-card {
-    background-color: #eaf4f1;
-    border-radius: 12px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    padding: 1rem;
-    text-align: center;
-    transition: transform 0.2s ease-in-out;
-  }
-  
-  .member-card:hover {
-    transform: scale(1.02);
-  }
-  
-  .member-photo {
-    width: 150px;
-    height: 150px;
-    object-fit: cover;
-    object-position: center;
-    border-radius: 50%;
-    border: 3px solid #ec9244;
-    margin-bottom: 1rem;
-  }
-  
-  .member-name {
-    font-size: 1.3rem;
-    font-weight: 600;
-    color: #264c46;
-    margin-bottom: 0.25rem;
-  }
-  
-  .member-bio {
-    font-size: 1rem;
-    color: #333;
-    margin-bottom: 1rem;
-  }
-  
-  .member-links a {
-    margin: 0 0.5rem;
-    text-decoration: none;
-    color: #ec9244;
-    font-weight: 500;
-  }
-  
-  .member-links a:hover {
-    text-decoration: underline;
-  }
-  
+}
