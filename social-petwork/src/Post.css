@@ -1,26 +1,38 @@
-.post-actions {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-top: 1rem;
-}
-
-.delete-button {
-  margin-left: auto;
-  background-color: #fff;
-  border: 1px solid #ccc;
-  padding: 6px 10px;
-  border-radius: 6px;
+/* Move delete button to far right and add hover effect */
+.delete-post-button {
+  background-color: transparent;
+  border: none;
+  color: #444;
+  font-size: 0.95rem;
   cursor: pointer;
-  transition: all 0.3s ease;
+  margin-left: auto;
   display: flex;
   align-items: center;
-  gap: 5px;
+  padding: 4px 8px;
+  border-radius: 4px;
+  transition: background-color 0.2s ease, color 0.2s ease;
 }
 
-.delete-button:hover {
-  background-color: #fbe9e7;
-  color: #c62828;
-  border-color: #c62828;
-  transform: scale(1.05);
+.delete-post-button:hover {
+  background-color: #ffeded;
+  color: #c0392b;
+  font-weight: bold;
+}
+
+/* Adjust post-footer layout */
+.post-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 10px;
+  padding-right: 10px;
+}
+
+/* Optional icon spacing */
+.comment-icon {
+  font-size: 1.3rem;
+  color: #f59a44;
+  margin-right: auto;
+  margin-left: 5px;
+  cursor: pointer;
 }
