@@ -7,10 +7,13 @@ const About = () => {
     <div className="about-container">
       <div className="page-content">
         <h2>About Us</h2>
+        <p></p>
         <p>
           Welcome to The Social Petwork! We're a passionate group of developers and animal lovers
           who built this platform to connect pet lovers with other pet lovers!
         </p>
+        <p></p>
+        <h2>Meet The Team!</h2>
       </div>
 
       <div className="team-section">
