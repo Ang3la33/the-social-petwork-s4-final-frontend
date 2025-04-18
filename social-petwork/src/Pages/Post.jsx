@@ -212,9 +212,9 @@ function PostBox({ post, user, token }) {
           Authorization: `Bearer ${token}`,
         },
       });
-  
+
       if (res.ok) {
-        window.location.reload(); // simple refresh for now
+        window.location.reload();
       } else {
         const msg = await res.text();
         alert("Failed to delete post: " + msg);
@@ -224,11 +224,6 @@ function PostBox({ post, user, token }) {
       alert("Something went wrong.");
     }
   };
-  
-
-  useEffect(() => {
-    if (showCommentBox) fetchComments();
-  }, [showCommentBox, fetchComments]);
 
   const handleCommentSubmit = () => {
     if (!comment.trim() || !user) return;
@@ -257,6 +252,26 @@ function PostBox({ post, user, token }) {
       );
   };
 
+  const handleDeleteComment = (commentId) => {
+    if (window.confirm("Are you sure you want to delete this comment?")) {
+      axios
+        .delete(`${API_BASE}/comments/${commentId}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        })
+        .then(() => fetchComments())
+        .catch((err) => {
+          console.error("❌ Failed to delete comment:", err.response?.data || err.message);
+          alert("Failed to delete comment.");
+        });
+    }
+  };
+
+  useEffect(() => {
+    if (showCommentBox) fetchComments();
+  }, [showCommentBox, fetchComments]);
+
   return (
     <div className="post-box">
       <div className="post-header">
@@ -283,24 +298,22 @@ function PostBox({ post, user, token }) {
         </div>
       )}
 
-<div className="post-footer">
-  <button
-    className="comment-button"
-    onClick={() => setShowCommentBox((prev) => !prev)}
-  >
-    <LiaComment className="comment-icon" />
-    Comment
-  </button>
+      <div className="post-footer">
+        <button
+          className="comment-button"
+          onClick={() => setShowCommentBox((prev) => !prev)}
+        >
+          <LiaComment className="comment-icon" />
+          Comment
+        </button>
 
-  <button
-    onClick={handleDeletePost}
-    className="delete-post-button"
-  >
-    🗑️ Delete
-  </button>
-</div>
-
-    
+        <button
+          onClick={handleDeletePost}
+          className="delete-post-button"
+        >
+          🗑️ Delete
+        </button>
+      </div>
 
       {showCommentBox && (
         <div className="comment-section">
@@ -319,8 +332,17 @@ function PostBox({ post, user, token }) {
 
           <div className="comment-list">
             {comments.map((c) => (
-              <div key={c.id} className="comment-item-post">
-                <strong>{c.username || "Anonymous"}</strong>: {c.content}
+              <div key={c.id} className="comment-item-profile">
+                <span>
+                  <strong>{c.username || "Anonymous"}</strong>: {c.content}
+                </span>
+                <span
+                  className="comment-delete"
+                  title="Delete comment"
+                  onClick={() => handleDeleteComment(c.id)}
+                >
+                  🗑
+                </span>
               </div>
             ))}
           </div>
