@@ -1,0 +1,41 @@
+.terms-box {
+    background-color: #f9f9f9;
+    border-left: 5px solid #FF9A47;
+    padding: 1.5rem;
+    border-radius: 10px;
+    margin-bottom: 2rem;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  }
+  
+  .terms-box h3 {
+    color: #264c46;
+    margin-bottom: 0.8rem;
+  }
+  
+  .terms-box p,
+  .terms-box li {
+    font-size: 1rem;
+    color: #444;
+  }
+  
+  .terms-box ul {
+    padding-left: 1.2rem;
+    margin: 0;
+    list-style-type: '🐾 ';
+  }
+  
+  .terms-footer {
+    text-align: center;
+    margin-top: 2rem;
+    font-style: italic;
+    font-size: 1rem;
+    color: #2c2c2c;
+  }
+  
+  .last-updated {
+    text-align: center;
+    margin-top: 1rem;
+    font-size: 0.9rem;
+    color: #888;
+  }
+  
