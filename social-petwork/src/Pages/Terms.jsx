@@ -7,7 +7,7 @@ function Terms() {
     <div className="page-content">
       <h2>Terms & Conditions</h2>
       <p>
-        Welcome to The Social Petwork! By using our platform, you're agreeing to be cool — to other users and to their pets. 🐾
+        Welcome to The Social Petwork! By using our platform, you're agreeing to be kind and pawsitive to other users and to their pets. 🐾
       </p>
 
       <div className="terms-box">
