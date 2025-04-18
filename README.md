@@ -1,14 +1,6 @@
 # 🐾 The Social Petwork — Frontend
 
-[![Deployed on AWS S3](https://img.shields.io/badge/Deployed-AWS_S3-green?style=for-the-badge&logo=amazon-aws)](http://social-petwork-frontend.s3-website.ca-central-1.amazonaws.com)
-
 The frontend for **The Social Petwork**, a pet-friendly social networking platform built with React. Connect with fellow pet lovers, post pup-dates, follow furry friends, and more! 🐶🐱
-
----
-
-## 🚀 Live Site
-
-🌐 [Visit the site](http://social-petwork-frontend.s3-website.ca-central-1.amazonaws.com)
 
 ---
 
