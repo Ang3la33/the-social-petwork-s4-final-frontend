@@ -118,7 +118,11 @@ function Register() {
           <button type="submit">Create Account</button>
         </form>
 
+        <div onClick={() => navigate('/')} style={{ cursor: 'pointer' }}>
         <img src={Logo} alt="The Social Petwork Logo" className="logo" />
+        </div>
+
+
         <h3 className="welcome-text">Welcome to The Social Petwork</h3>
       </div>
     </div>
