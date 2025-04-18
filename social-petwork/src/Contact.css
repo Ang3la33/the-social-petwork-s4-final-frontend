@@ -1,0 +1,37 @@
+.contact-list {
+    list-style: none;
+    padding: 0;
+    margin-top: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+    align-items: flex-start;
+  }
+  
+  .contact-list li a {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    text-decoration: none;
+    color: #08361d;
+    font-weight: 500;
+    transition: all 0.2s ease;
+  }
+  
+  .contact-list li a:hover {
+    color: #FF9A47;
+  }
+  
+  .mini-profile {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #FF9A47;
+    transition: transform 0.3s ease;
+  }
+  
+  .mini-profile:hover {
+    transform: scale(1.12);
+  }
+  
