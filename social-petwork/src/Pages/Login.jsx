@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import '../App.css';
 import Logo from "../Assets/Images/logo.png";
 import { useNavigate } from 'react-router-dom';
+import { BASE_URL } from "../config";
 
 function Login() {
   const navigate = useNavigate();
@@ -25,7 +26,7 @@ function Login() {
     setError("");
 
     try {
-      const response = await fetch("http://15.222.242.215:8080/users/login", {
+      const response = await fetch(`${BASE_URL}/users/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(credentials)
@@ -85,7 +86,7 @@ function Login() {
         </p>
 
         <div onClick={() => navigate('/')} style={{ cursor: 'pointer' }}>
-        <img src={Logo} alt="The Social Petwork Logo" className="logo" />
+          <img src={Logo} alt="The Social Petwork Logo" className="logo" />
         </div>
 
         <h3 className="welcome-text">Welcome to The Social Petwork</h3>

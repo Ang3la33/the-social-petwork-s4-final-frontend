@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { FaTrashAlt, FaEdit } from "react-icons/fa";
 import { LiaComment } from "react-icons/lia";
 import { Link, useNavigate } from "react-router-dom";
+import { BASE_URL } from "../config";
 import "../App.css";
 import filler from "../Assets/Images/filler.png";
 
@@ -21,7 +22,7 @@ function Profile() {
       return;
     }
 
-    fetch(`http://15.222.242.215:8080/users/${userId}`, {
+    fetch(`${BASE_URL}/users/${userId}`, {
       headers: { Authorization: `Bearer ${token}` },
     })
       .then((res) => {
@@ -34,21 +35,21 @@ function Profile() {
         navigate("/login");
       });
 
-    fetch(`http://15.222.242.215:8080/users/${userId}/posts`, {
+    fetch(`${BASE_URL}/users/${userId}/posts`, {
       headers: { Authorization: `Bearer ${token}` },
     })
       .then((res) => res.json())
       .then((data) => setPosts(data))
       .catch(() => setPosts([]));
 
-    fetch(`http://15.222.242.215:8080/users/${userId}/followers`, {
+    fetch(`${BASE_URL}/users/${userId}/followers`, {
       headers: { Authorization: `Bearer ${token}` },
     })
       .then((res) => res.json())
       .then((data) => setFollowersCount(data.length))
       .catch(() => setFollowersCount(0));
 
-    fetch(`http://15.222.242.215:8080/users/${userId}/following`, {
+    fetch(`${BASE_URL}/users/${userId}/following`, {
       headers: { Authorization: `Bearer ${token}` },
     })
       .then((res) => res.json())
@@ -72,7 +73,7 @@ function Profile() {
                 user.avatarUrl?.startsWith("http")
                   ? user.avatarUrl
                   : user.avatarUrl
-                  ? `http://15.222.242.215:8080${user.avatarUrl}`
+                  ? `${BASE_URL}${user.avatarUrl}`
                   : filler
               }
               alt="Avatar"
@@ -156,7 +157,7 @@ function ProfilePost({ post, user, token, onDelete }) {
   const [comments, setComments] = useState([]);
 
   const fetchComments = () => {
-    fetch(`http://15.222.242.215:8080/comments/post/${post.id}`, {
+    fetch(`${BASE_URL}/comments/post/${post.id}`, {
       headers: { Authorization: `Bearer ${token}` },
     })
       .then((res) => res.json())
@@ -173,7 +174,7 @@ function ProfilePost({ post, user, token, onDelete }) {
   const handleCommentSubmit = () => {
     if (!comment.trim()) return;
 
-    fetch("http://15.222.242.215:8080/comments", {
+    fetch(`${BASE_URL}/comments`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -195,7 +196,7 @@ function ProfilePost({ post, user, token, onDelete }) {
   const handlePostDelete = () => {
     if (!window.confirm("Delete this post and its comments?")) return;
 
-    fetch(`http://15.222.242.215:8080/posts/${post.id}`, {
+    fetch(`${BASE_URL}/posts/${post.id}`, {
       method: "DELETE",
       headers: { Authorization: `Bearer ${token}` },
     })
@@ -204,7 +205,7 @@ function ProfilePost({ post, user, token, onDelete }) {
   };
 
   const handleCommentDelete = (commentId) => {
-    fetch(`http://15.222.242.215:8080/comments/${commentId}`, {
+    fetch(`${BASE_URL}/comments/${commentId}`, {
       method: "DELETE",
       headers: { Authorization: `Bearer ${token}` },
     })
@@ -221,7 +222,7 @@ function ProfilePost({ post, user, token, onDelete }) {
               user.avatarUrl?.startsWith("http")
                 ? user.avatarUrl
                 : user.avatarUrl
-                ? `http://15.222.242.215:8080${user.avatarUrl}`
+                ? `${BASE_URL}${user.avatarUrl}`
                 : filler
             }
             alt="Avatar"
@@ -244,7 +245,7 @@ function ProfilePost({ post, user, token, onDelete }) {
       {post.imageUrl && (
         <div className="post-image-box">
           <img
-            src={`http://15.222.242.215:8080${post.imageUrl}`}
+            src={`${BASE_URL}${post.imageUrl}`}
             alt="Post visual"
             className="post-image"
           />

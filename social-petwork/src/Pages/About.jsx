@@ -88,7 +88,6 @@ const About = () => {
             <img src={require("../Assets/Images/baby.jpeg")} alt="" />
             <img src={require("../Assets/Images/birthdayboymac.JPG")} alt="" />
             <img src={require("../Assets/Images/mac2.JPG")} alt="" />
-
             <img src={require("../Assets/Images/mac1.JPG")} alt="" />
             <img src={require("../Assets/Images/bethspuptree.jpeg")} alt="" />
             <img src={require("../Assets/Images/hammy(1).jpeg")} alt="" />
@@ -106,7 +105,6 @@ const About = () => {
             <img src={require("../Assets/Images/baby.jpeg")} alt="" />
             <img src={require("../Assets/Images/birthdayboymac.JPG")} alt="" />
             <img src={require("../Assets/Images/mac2.JPG")} alt="" />
-          
           </div>
         </div>
       </div>

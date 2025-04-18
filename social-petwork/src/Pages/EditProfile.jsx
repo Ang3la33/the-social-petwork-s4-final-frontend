@@ -1,158 +1,76 @@
-import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import "../App.css";
-import filler from "../Assets/Images/filler.png";
-import AvatarUploader from "../Components/AvatarUploader";
-
-const API_BASE = "http://15.222.242.215:8080";
+import React, { useContext, useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import { UserContext } from "../Context/UserContext";
+import { BASE_URL } from "../config";
 
 function EditProfile() {
-  const userId = localStorage.getItem("userId");
-  const token = localStorage.getItem("token");
-  const navigate = useNavigate();
-
+  const { userId } = useParams();
+  const { user } = useContext(UserContext);
   const [formData, setFormData] = useState({
     name: "",
-    email: "",
-    username: "",
-    password: "",
-    birthday: "",
-    about: "",
-    avatarUrl: ""
+    bio: "",
   });
 
-  const [message, setMessage] = useState("");
-
   useEffect(() => {
-    if (!userId || !token) {
-      navigate("/login");
-      return;
-    }
-
-    fetch(`${API_BASE}/users/${userId}`, {
-      headers: { Authorization: `Bearer ${token}` }
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        setFormData({
-          name: data.name || "",
-          email: data.email || "",
-          username: data.username || "",
-          password: "",
-          birthday: data.birthday || "",
-          about: data.about || "",
-          avatarUrl: data.avatarUrl || ""
+    const fetchUser = async () => {
+      try {
+        const response = await fetch(`${BASE_URL}/users/${userId}`, {
+          headers: {
+            Authorization: `Bearer ${user.token}`,
+          },
         });
-      })
-      .catch(() => navigate("/login"));
-  }, [userId, token, navigate]);
+        const data = await response.json();
+        setFormData({ name: data.name || "", bio: data.bio || "" });
+      } catch (error) {
+        console.error("Error fetching user:", error);
+      }
+    };
 
-  const handleChange = (e) =>
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    fetchUser();
+  }, [userId, user.token]);
 
-  const handleSubmit = (e) => {
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prevState) => ({ ...prevState, [name]: value }));
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    try {
+      const response = await fetch(`${BASE_URL}/users/${userId}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${user.token}`,
+        },
+        body: JSON.stringify(formData),
+      });
 
-    const updatedData = { ...formData };
+      if (!response.ok) {
+        throw new Error("Failed to update user profile.");
+      }
 
-    // Don't send password if empty
-    if (!formData.password.trim()) {
-      delete updatedData.password;
+      alert("Profile updated successfully!");
+    } catch (error) {
+      console.error("Update error:", error);
+      alert("Something went wrong.");
     }
-
-    fetch(`${API_BASE}/users/${userId}`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`
-      },
-      body: JSON.stringify(updatedData)
-    })
-      .then((res) => {
-        if (!res.ok) throw new Error("Update failed");
-        return res.json();
-      })
-      .then((updatedUser) => {
-        localStorage.setItem("username", updatedUser.username);
-        setMessage("Profile updated successfully!");
-        setTimeout(() => navigate("/profile"), 1500);
-      })
-      .catch(() => setMessage("Failed to update profile. Please try again."));
   };
 
   return (
-    <div className="edit-wrapper">
-      <div className="edit-box">
-        <div className="avatar-section">
-          <AvatarUploader
-            userId={userId}
-            initialAvatarUrl={formData.avatarUrl}
-            onUploadComplete={(newAvatarUrl) =>
-              setFormData((prev) => ({ ...prev, avatarUrl: newAvatarUrl }))
-            }
-          />
+    <div className="page-content">
+      <h2>Edit Profile</h2>
+      <form onSubmit={handleSubmit}>
+        <div>
+          <label>Name:</label>
+          <input name="name" value={formData.name} onChange={handleChange} />
         </div>
-
-        <form onSubmit={handleSubmit} className="edit-form">
-          <label>Edit Name</label>
-          <input
-            type="text"
-            name="name"
-            placeholder="Enter Your Full Name"
-            value={formData.name}
-            onChange={handleChange}
-            required
-          />
-
-          <label>Edit Username</label>
-          <input
-            type="text"
-            name="username"
-            placeholder="Enter a New Username Here"
-            value={formData.username}
-            onChange={handleChange}
-            required
-          />
-
-          <label>Edit Email</label>
-          <input
-            type="email"
-            name="email"
-            placeholder="Enter a New Email Here"
-            value={formData.email}
-            onChange={handleChange}
-            required
-          />
-
-          <label>New Password (leave blank to keep current)</label>
-          <input
-            type="password"
-            name="password"
-            placeholder="Enter a New Password"
-            value={formData.password}
-            onChange={handleChange}
-          />
-
-          <label>Edit Birthday</label>
-          <input
-            type="date"
-            name="birthday"
-            value={formData.birthday}
-            onChange={handleChange}
-          />
-
-          <label>Edit About Me</label>
-          <textarea
-            name="about"
-            placeholder="Enter a New About Me Here"
-            value={formData.about}
-            onChange={handleChange}
-          />
-
-          <button type="submit" className="save-button">Save Changes</button>
-          {message && <p className="edit-message">{message}</p>}
-        </form>
-      </div>
+        <div>
+          <label>Bio:</label>
+          <textarea name="bio" value={formData.bio} onChange={handleChange} />
+        </div>
+        <button type="submit">Update Profile</button>
+      </form>
     </div>
   );
 }

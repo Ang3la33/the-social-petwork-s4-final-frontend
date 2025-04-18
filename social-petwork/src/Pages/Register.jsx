@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import '../App.css';
 import Logo from "../Assets/Images/logo.png";
 import { useNavigate } from 'react-router-dom';
+import { BASE_URL } from '../config';
 
 function Register() {
   const navigate = useNavigate();
@@ -41,7 +42,7 @@ function Register() {
     };
 
     try {
-      const response = await fetch("http://15.222.242.215:8080/users/register", {
+      const response = await fetch(`${BASE_URL}/users/register`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(newUser)

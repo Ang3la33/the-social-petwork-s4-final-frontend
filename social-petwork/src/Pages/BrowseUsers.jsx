@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "../App.css";
 import filler from "../Assets/Images/filler.png";
+import { BASE_URL } from "../config";
 
 function BrowseUsers() {
   const [users, setUsers] = useState([]);
@@ -15,8 +16,7 @@ function BrowseUsers() {
     const fetchData = async () => {
       setLoading(true);
       try {
-        // 1. Fetch all users
-        const usersResponse = await fetch("http://15.222.242.215:8080/users", {
+        const usersResponse = await fetch(`${BASE_URL}/users`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -25,9 +25,8 @@ function BrowseUsers() {
         const usersData = await usersResponse.json();
         setUsers(usersData);
 
-        // 2. Fetch following relationships
         const followingResponse = await fetch(
-          `http://15.222.242.215:8080/users/${userId}/following`,
+          `${BASE_URL}/users/${userId}/following`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -44,7 +43,6 @@ function BrowseUsers() {
             .filter((id) => typeof id === "number")
         );
 
-        console.log("✅ Loaded following IDs:", Array.from(followingIds));
         setFollowing(followingIds);
       } catch (err) {
         console.error("Fetch error:", err);
@@ -59,7 +57,7 @@ function BrowseUsers() {
 
   const handleFollowToggle = async (targetId) => {
     const isFollowing = following.has(targetId);
-    const url = `http://15.222.242.215:8080/users/${userId}/${isFollowing ? "unfollow" : "follow"}/${targetId}`;
+    const url = `${BASE_URL}/users/${userId}/${isFollowing ? "unfollow" : "follow"}/${targetId}`;
     const method = isFollowing ? "DELETE" : "POST";
 
     try {
@@ -77,11 +75,7 @@ function BrowseUsers() {
 
       setFollowing((prev) => {
         const updated = new Set(prev);
-        if (isFollowing) {
-          updated.delete(targetId);
-        } else {
-          updated.add(targetId);
-        }
+        isFollowing ? updated.delete(targetId) : updated.add(targetId);
         return updated;
       });
     } catch (err) {
@@ -107,7 +101,7 @@ function BrowseUsers() {
                   <img
                     src={
                       user.avatarUrl
-                        ? `http://15.222.242.215:8080${user.avatarUrl}`
+                        ? `${BASE_URL}${user.avatarUrl}`
                         : filler
                     }
                     alt={user.username}

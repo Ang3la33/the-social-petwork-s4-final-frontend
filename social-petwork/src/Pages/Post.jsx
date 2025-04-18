@@ -3,8 +3,7 @@ import { LiaComment } from "react-icons/lia";
 import axios from "axios";
 import "../App.css";
 import filler from "../Assets/Images/filler.png";
-
-const API_BASE = "http://15.222.242.215:8080";
+import { BASE_URL } from "../config";
 
 function Post() {
   const [user, setUser] = useState(null);
@@ -22,25 +21,25 @@ function Post() {
   useEffect(() => {
     if (!userId || !token) return;
 
-    axios.get(`${API_BASE}/users/${userId}`, {
+    axios.get(`${BASE_URL}/users/${userId}`, {
       headers: { Authorization: `Bearer ${token}` },
     })
       .then((res) => setUser(res.data))
       .catch((err) => console.error("Failed to fetch user", err));
 
-    axios.get(`${API_BASE}/users/${userId}/posts`, {
+    axios.get(`${BASE_URL}/users/${userId}/posts`, {
       headers: { Authorization: `Bearer ${token}` },
     })
       .then((res) => setUserPostsCount(res.data.length))
       .catch(() => setUserPostsCount(0));
 
-    axios.get(`${API_BASE}/users/${userId}/followers`, {
+    axios.get(`${BASE_URL}/users/${userId}/followers`, {
       headers: { Authorization: `Bearer ${token}` },
     })
       .then((res) => setFollowersCount(res.data.length))
       .catch(() => setFollowersCount(0));
 
-    axios.get(`${API_BASE}/users/${userId}/following`, {
+    axios.get(`${BASE_URL}/users/${userId}/following`, {
       headers: { Authorization: `Bearer ${token}` },
     })
       .then((res) => setFollowingCount(res.data.length))
@@ -50,7 +49,7 @@ function Post() {
   useEffect(() => {
     const fetchPosts = () => {
       axios
-        .get(`${API_BASE}/posts`)
+        .get(`${BASE_URL}/posts`)
         .then((res) => setPosts(res.data))
         .catch((err) => console.error("Failed to fetch posts:", err));
     };
@@ -63,7 +62,7 @@ function Post() {
   useEffect(() => {
     const fetchSuggestedUsers = async () => {
       try {
-        const res = await axios.get(`${API_BASE}/users`, {
+        const res = await axios.get(`${BASE_URL}/users`, {
           headers: { Authorization: `Bearer ${token}` },
         });
 
@@ -91,13 +90,13 @@ function Post() {
     }
 
     axios
-      .post(`${API_BASE}/posts`, formData, {
+      .post(`${BASE_URL}/posts`, formData, {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then(() => {
         setNewPostContent("");
         setImageFile(null);
-        return axios.get(`${API_BASE}/posts`);
+        return axios.get(`${BASE_URL}/posts`);
       })
       .then((res) => setPosts(res.data))
       .catch((err) =>
@@ -138,7 +137,7 @@ function Post() {
           {user && (
             <div className="user-profile-box">
               <img
-                src={user.avatarUrl ? `${API_BASE}${user.avatarUrl}` : filler}
+                src={user.avatarUrl ? `${BASE_URL}${user.avatarUrl}` : filler}
                 alt="Avatar"
                 className="user-avatar"
               />
@@ -169,7 +168,7 @@ function Post() {
                 suggestedUsers.map((person) => (
                   <div key={person.id} className="suggested-person">
                     <img
-                      src={person.avatarUrl ? `${API_BASE}${person.avatarUrl}` : filler}
+                      src={person.avatarUrl ? `${BASE_URL}${person.avatarUrl}` : filler}
                       alt="Avatar"
                       className="avatar-picture"
                     />
@@ -192,7 +191,7 @@ function PostBox({ post, user, token }) {
 
   const fetchComments = useCallback(() => {
     axios
-      .get(`${API_BASE}/comments/post/${post.id}`, {
+      .get(`${BASE_URL}/comments/post/${post.id}`, {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((res) => {
@@ -206,7 +205,7 @@ function PostBox({ post, user, token }) {
 
   const handleDeletePost = async () => {
     try {
-      const res = await fetch(`${API_BASE}/posts/${post.id}`, {
+      const res = await fetch(`${BASE_URL}/posts/${post.id}`, {
         method: "DELETE",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -230,7 +229,7 @@ function PostBox({ post, user, token }) {
 
     axios
       .post(
-        `${API_BASE}/comments`,
+        `${BASE_URL}/comments`,
         {
           content: comment,
           user: { id: user.id },
@@ -255,7 +254,7 @@ function PostBox({ post, user, token }) {
   const handleDeleteComment = (commentId) => {
     if (window.confirm("Are you sure you want to delete this comment?")) {
       axios
-        .delete(`${API_BASE}/comments/${commentId}`, {
+        .delete(`${BASE_URL}/comments/${commentId}`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -276,7 +275,7 @@ function PostBox({ post, user, token }) {
     <div className="post-box">
       <div className="post-header">
         <img
-          src={post.user?.avatarUrl ? `${API_BASE}${post.user.avatarUrl}` : filler}
+          src={post.user?.avatarUrl ? `${BASE_URL}${post.user.avatarUrl}` : filler}
           alt="Avatar"
           className="post-avatar"
         />
@@ -291,7 +290,7 @@ function PostBox({ post, user, token }) {
       {post.imageUrl && (
         <div className="post-image-box">
           <img
-            src={`${API_BASE}${post.imageUrl}`}
+            src={`${BASE_URL}${post.imageUrl}`}
             alt="Post visual"
             className="post-image"
           />
